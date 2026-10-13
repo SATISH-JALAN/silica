@@ -1,0 +1,78 @@
+# Render Blueprint for the Silica services (Render dashboard -> New -> Blueprint -> this repo).
+# Two free web services, each running two processes from Dockerfile.services (services/run.sh):
+#   silica-agent : simulated provider agent (public URL) + market maker
+#   silica-probe : independent buyer probe (public URL) + CRE relay
+# Keys are `sync: false`: Render asks for them when the Blueprint is created; they never
+# live in the repo. Every value here is testnet-only.
+services:
+  - type: web
+    name: silica-agent
+    runtime: docker
+    dockerfilePath: ./Dockerfile.services
+    dockerContext: .
+    plan: free
+    region: singapore
+    branch: main
+    healthCheckPath: /health
+    envVars:
+      - key: SERVICE
+        value: agent,mm
+      - key: AGENT_PORT
+        value: "10000"
+      - key: RPC_URL
+        value: https://testnet-rpc.monad.xyz
+      - key: FAKE_GPU
+        value: "1"
+      - key: LEVELS
+        value: "2"
+      - key: SIZES
+        value: "15,25"
+      - key: PROVIDER_A_KEY
+        sync: false
+      - key: NODE_A_KEY
+        sync: false
+      - key: PROVIDER_B_KEY
+        sync: false
+      - key: NODE_B_KEY
+        sync: false
+      - key: MM_KEY
+        sync: false
+
+  - type: web
+    name: silica-probe
+    runtime: docker
+    dockerfilePath: ./Dockerfile.services
+    dockerContext: .
+    plan: free
+    region: singapore
+    branch: main
+    healthCheckPath: /health
+    envVars:
+      - key: SERVICE
+        value: probe,relay
+      - key: PROBE_PORT
+        value: "10000"
+      - key: RPC_URL
+        value: https://testnet-rpc.monad.xyz
+      # the relay reaches the probe inside the same container, and the agent over its public URL
+      - key: PROBE_URL
+        value: http://127.0.0.1:10000
+      - key: AGENT_URL
+        sync: false
+      - key: ENVIO_URL
+        sync: false
+      # hosted relay delivers through the testnet relayReport() path (CRE simulation needs the CLI)
+      - key: RELAY_MODE
+        value: local
+      - key: MARGIN_AT_START
+        value: "0"
+      - key: MARGIN_EVERY
+        value: "86400"
+      - key: PROVIDER_A_ADDRESS
+        value: "0x3e47F976d224d83F3d6994c5848A329E0ad5FbE0"
+      - key: PROVIDER_B_ADDRESS
+        value: "0xB70b308f0563431eA89406DD6333b2802478D9bd"
+      - key: PROBE_KEY
+        sync: false
+      - key: RELAYER_KEY
+        sync: false

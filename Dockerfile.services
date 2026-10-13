@@ -1,4 +1,5 @@
-# One image for every Silica service; pick the process with SERVICE=agent|probe|mm|relay.
+# One image for every Silica service. SERVICE picks the process(es): agent | probe | mm | relay,
+# or several comma-separated ("agent,mm") to share one container (services/run.sh).
 # Keys come from the host's secret settings at runtime, never from the image.
 FROM node:22-slim
 RUN corepack enable
@@ -17,4 +18,4 @@ COPY packages/shared packages/shared
 COPY services services
 
 ENV SERVICE=agent
-CMD ["sh", "-c", "pnpm --filter @silica/services \"$SERVICE\""]
+CMD ["bash", "services/run.sh"]

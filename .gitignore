@@ -1,0 +1,21 @@
+node_modules
+.next
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+next-env.d.ts
+# foundry
+contracts/out
+contracts/cache
+contracts/broadcast/*/31337
+# envio
+indexer/generated
+indexer/.envio
+# cre
+cre/**/tmp.wasm
+cre/**/*.wasm
+cre/.cre
+# misc
+.DS_Store
+*.log

@@ -1,0 +1,197 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   Silica visual system
+   Palette sampled from the art-style folder: warm void, engraved
+   champagne planet, a single glowing gold arc, cream wordmark.
+   Gold is the brand. Green / red / amber carry meaning only.
+   ───────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-void: #060504;
+  --color-night: #0b0907;
+  --color-panel: #110e0b;
+  --color-panel-2: #17130f;
+  --color-line: rgb(232 205 160 / 0.10);
+  --color-line-strong: rgb(232 205 160 / 0.22);
+
+  --color-cream: #f3ead9;
+  --color-sand: #cdbfa6;
+  --color-dust: #9a8b74;
+  --color-ash: #655a4b;
+
+  --color-gold: #e2b36e;
+  --color-gold-deep: #b9813e;
+  --color-gold-hot: #ffd9a1;
+
+  --color-bid: #82c49c;
+  --color-ask: #e2715d;
+  --color-warn: #f5a524;
+
+  --font-display: var(--font-michroma), "Eurostile", ui-sans-serif, sans-serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  background: var(--color-void);
+}
+
+/* body stays transparent over html so fixed -z layers (the dust field) show through */
+body {
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: rgb(226 179 110 / 0.35);
+  color: var(--color-cream);
+}
+
+@layer components {
+/* Numbers never jitter */
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+/* Wide-tracked label in the wordmark's voice */
+.label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-dust);
+}
+
+/* Fine film grain, the engraved texture of the art */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 0.9  0 0 0 0 0.75  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: grain 1.2s steps(6) infinite;
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Hairline gold rule like the one under the tagline */
+.rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold) 30%, var(--color-gold) 70%, transparent);
+  opacity: 0.5;
+}
+
+/* Panel surface used across the app */
+.panel {
+  background: linear-gradient(180deg, rgb(23 19 15 / 0.85), rgb(13 11 8 / 0.85));
+  border: 1px solid var(--color-line);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgb(255 230 190 / 0.04);
+}
+
+.glow-text {
+  text-shadow: 0 0 24px rgb(255 205 140 / 0.35);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(100deg, #fff1d9 0%, #e2b36e 45%, #b9813e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Cursor spotlight: a gold rim and soft wash follow the pointer (vars set in Cursor) */
+.spot {
+  position: relative;
+}
+.spot::before,
+.spot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 2;
+}
+.spot::before {
+  padding: 1px;
+  background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgb(255 217 161 / 0.6), transparent 45%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+.spot::after {
+  background: radial-gradient(560px circle at var(--mx, 50%) var(--my, 50%), rgb(226 179 110 / 0.07), transparent 50%);
+}
+.spot:hover::before,
+.spot:hover::after {
+  opacity: 1;
+}
+
+/* Hollow display type, engraved like the horizon linework */
+.kb-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(226 179 110 / 0.5);
+}
+
+}
+
+/* The custom cursor replaces the native one on the landing page */
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+
+/* SplitText mask lines shouldn't clip descenders */
+.split-line {
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+/* Scrollbar, quiet */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(232 205 160 / 0.18) transparent;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain::after { animation: none; }
+}
+
+@keyframes scrollcue {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}

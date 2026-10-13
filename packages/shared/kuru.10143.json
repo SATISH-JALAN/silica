@@ -1,0 +1,49 @@
+{
+  "chainId": 10143,
+  "spotRouter": "0x008200AD02fCb7020B019D11Cbabd32FecE1De78",
+  "accountCore": "0xe08573a1Ecc4aa507c9626071fA0c4513caf7906",
+  "usdc": "0xb01DC575a7ef75e58A05D2bde73ab79f8e7dd0Be",
+  "usdcFeed": "0x29064f22175DBD7394aC7a61e3CC42Fb377175B7",
+  "params": {
+    "sizePrecision": "10000000000",
+    "pricePrecision": 10000,
+    "tickSize": 100,
+    "passiveSpreadTicks": 2,
+    "minQuoteNotional": "10000000",
+    "maxQuoteNotional": "5000000000000",
+    "takerFeePps": "2000",
+    "makerFeePps": "0"
+  },
+  "series": {
+    "1": {
+      "week": 42,
+      "token": "0x0a34471DC8c2893a8c63e4Af603535e3F496d6ed",
+      "feed": "0x88424A266946BE4912e23BcA1D135e1c8113D672",
+      "market": "0xAc325AB01DfE0fbF5e3Ac422C87c62783Fb061fA"
+    },
+    "2": {
+      "week": 44,
+      "token": "0x841661c94Af0384680755bB65738027EA1FCF093",
+      "feed": "0x835a250Faa251D9c74c87B548E5aF0D4204dB6DC",
+      "market": "0x39d3a741Caef7F15aF495748159BE451199F2104"
+    },
+    "3": {
+      "week": 45,
+      "token": "0x7a2E94F1fA56D36E5144EC849311de164341C8B3",
+      "feed": "0xf45E3200B54610685a535C3e9Db7bB055EA739ac",
+      "market": "0xdbdDBCd51fB933c8249dc62AAE8F6bFd6133af96"
+    },
+    "4": {
+      "week": 46,
+      "token": "0x5d76f956712B9E9A357Be1F1E25b79A299B8814F",
+      "feed": "0xb99C9af3011E689B9F7155562529449f8C187F8e",
+      "market": "0xa5434ea6CADf6bDA1833eAFC2AFf2bE035F3c344"
+    },
+    "5": {
+      "week": 47,
+      "token": "0x5561b62F6B73097948c32f94c7ab0F97311AE30a",
+      "feed": "0x1b6b317716c9D56A0F390DB3B849C89b383be8a3",
+      "market": "0x461FFe3b6F562f228dBC421E7863b6FDbcfE68df"
+    }
+  }
+}

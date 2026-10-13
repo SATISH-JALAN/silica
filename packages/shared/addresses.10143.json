@@ -1,0 +1,42 @@
+{
+  "BondVault": "0xa730F61B3A0c0f3042EEd7b458EcF3aD392bFa00",
+  "DeliveryOracle": "0xF5d5419A6f1DaA315fa6b1312e24A639D33d2a52",
+  "MockUSDC": "0x077eF50fd19bc7A77f3Bd7Fd8A3Ad028E7014561",
+  "RedemptionManager": "0xf21bd145cd5C7d306033bfdF5FE9Cf87c3738dab",
+  "SeriesRegistry": "0x7889B29861aF261026a1aaa9983954DE0E76D8a6",
+  "SilicaBook": "0x783d37B75E294A92cF54c017dF9FA7e8A05c9Be3",
+  "admin": "0xd89Cf5c4c8Baf3e11219a83208DE9982e0e422D8",
+  "chainId": 10143,
+  "chainSelector": "2183018362218727504",
+  "deployBlock": 70687435,
+  "forwarder": "0xB9F79d863261869B234c481D1f9A7af84AeAd192",
+  "hourSeconds": 300,
+  "relayer": "0xBB2D34706281380f1bA80A5CA171197f088d36A5",
+  "series": {
+    "1": {
+      "seriesId": 1,
+      "token": "0x0a34471DC8c2893a8c63e4Af603535e3F496d6ed",
+      "week": 42
+    },
+    "2": {
+      "seriesId": 2,
+      "token": "0x841661c94Af0384680755bB65738027EA1FCF093",
+      "week": 44
+    },
+    "3": {
+      "seriesId": 3,
+      "token": "0x7a2E94F1fA56D36E5144EC849311de164341C8B3",
+      "week": 45
+    },
+    "4": {
+      "seriesId": 4,
+      "token": "0x5d76f956712B9E9A357Be1F1E25b79A299B8814F",
+      "week": 46
+    },
+    "5": {
+      "seriesId": 5,
+      "token": "0x5561b62F6B73097948c32f94c7ab0F97311AE30a",
+      "week": 47
+    }
+  }
+}

@@ -1,8 +1,9 @@
 packages:
   - "apps/*"
   - "packages/*"
-  - "services/*"
+  - "services"
   - "contracts"
+  - "indexer"
 onlyBuiltDependencies:
   - sharp
   - "@tailwindcss/oxide"

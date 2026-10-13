@@ -1,0 +1,30 @@
+{
+  "happy": {
+    "ticketId": "4",
+    "at": "2026-10-13T14:55:32.553Z",
+    "hours": 2,
+    "slashPaidUsdc": "0",
+    "txs": {
+      "trade": "0xc01a870231fa911854630fe51149f55dc67dce28ac85dfbdca3fa59e7162ebd5",
+      "redeem": "0xd6567e1b2b04f7e089b0f298d6f8cd3c9addc70b3e082f9efcd97f8c98ed8ab9",
+      "access": "0xbd095c9ba8bd931be9a7133d9bef5d845cbc448b42d7a7dafd9f8f2df9c40374",
+      "hour0_confirm": "0x98907a4d485a6b0dfbb2d074388959783a152fbb92d12d33fb0166abd2209089",
+      "hour1_confirm": "0xf9c10beb5c460b3c9b35e45a9073f94bc24115c2225bb72cb61e4f1fb503d168"
+    }
+  },
+  "slash": {
+    "ticketId": "2",
+    "at": "2026-10-13T14:01:54.696Z",
+    "hours": 4,
+    "slashPaidUsdc": "6.06",
+    "txs": {
+      "trade": "0x212cecb6f65d15fc14bc5d5ab57bad80126f65b1191da75273af42a11a7956d3",
+      "redeem": "0x0d453a4b9ca542d4b85a2fe214ce23ba5f7cc23bbe13c27092cf8bc3e8df4bdb",
+      "access": "0x17969401bb2f7a741b9badca6e2df7b740962d8e0d97abd18532904b4d73df57",
+      "hour0_confirm": "0x2a054d06edd32d158b03992f3b78d4ed5e5b49b914a4931ef3e8fed8aaf86412",
+      "hour1_slash": "0x01889e326fef3d4eddd8f0a90080bcce38d38f47415961259d07464ae85229ca",
+      "hour2_slash": "0x8b9265b49afcfd969fc1eb437869810ee36e247c72cbd7a4290dbbce72667e0a",
+      "hour3_confirm": "0x733bc986360ed7fc9e45c807446ec9520dc5db07d6431e45723f2313238b3102"
+    }
+  }
+}

@@ -98,7 +98,9 @@ async function cancel(m: Maker, o: Open) {
   try {
     if ((await remaining(o.id)) > 0) await send(publicClient, m.w, { address: book, abi: silicaBookAbi, functionName: "cancel", args: [BigInt(o.id)] });
   } catch (e) {
+    // keep tracking it (e.g. out of gas), so the next cycle retries instead of forgetting a live order
     log.warn("cancel failed", { maker: m.name, id: o.id, err: String(e).slice(0, 160) });
+    return;
   }
   state[m.name] = (state[m.name] ?? []).filter((x) => x.id !== o.id);
   save();

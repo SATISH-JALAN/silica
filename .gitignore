@@ -53,3 +53,7 @@ desktop.ini
 *.pem
 *.key
 keystore/
+
+# docs site build output
+apps/docs/.vitepress/cache
+apps/docs/.vitepress/dist

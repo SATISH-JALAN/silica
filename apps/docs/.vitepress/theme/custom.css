@@ -1,0 +1,132 @@
+@import url("https://fonts.googleapis.com/css2?family=Michroma&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+/* Silica palette: warm black, gold, cream (matches the app) */
+:root,
+.dark {
+  --vp-c-bg: #070605;
+  --vp-c-bg-alt: #0d0a07;
+  --vp-c-bg-elv: #120e0a;
+  --vp-c-bg-soft: #16110c;
+  --vp-c-divider: rgba(232, 205, 160, 0.1);
+  --vp-c-border: rgba(232, 205, 160, 0.16);
+  --vp-c-gutter: rgba(232, 205, 160, 0.06);
+
+  --vp-c-text-1: #f3ead9;
+  --vp-c-text-2: #cdbfa6;
+  --vp-c-text-3: #9a8b74;
+
+  --vp-c-brand-1: #ffd9a1;
+  --vp-c-brand-2: #e2b36e;
+  --vp-c-brand-3: #b9813e;
+  --vp-c-brand-soft: rgba(226, 179, 110, 0.14);
+
+  --vp-c-tip-1: #82c49c;
+  --vp-c-tip-soft: rgba(130, 196, 156, 0.12);
+  --vp-c-warning-1: #e2b36e;
+  --vp-c-warning-soft: rgba(226, 179, 110, 0.12);
+  --vp-c-danger-1: #e2715d;
+  --vp-c-danger-soft: rgba(226, 113, 93, 0.12);
+
+  --vp-font-family-base: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --vp-font-family-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #ffd9a1 10%, #e2b36e 45%, #b9813e 90%);
+  --vp-home-hero-image-background-image: radial-gradient(circle, rgba(226, 179, 110, 0.32) 0%, rgba(7, 6, 5, 0) 68%);
+  --vp-home-hero-image-filter: blur(56px);
+
+  --vp-button-brand-bg: #e2b36e;
+  --vp-button-brand-text: #120d07;
+  --vp-button-brand-hover-bg: #ffd9a1;
+  --vp-button-brand-hover-text: #120d07;
+  --vp-button-brand-active-bg: #b9813e;
+  --vp-code-block-bg: #0e0b08;
+  --vp-code-bg: rgba(226, 179, 110, 0.1);
+  --vp-code-color: #ffd9a1;
+  --vp-sidebar-bg-color: #0a0806;
+  --vp-nav-bg-color: rgba(7, 6, 5, 0.86);
+  --vp-local-search-bg: #0d0a07;
+}
+
+/* headings in the wordmark face */
+.vp-doc h1,
+.VPHero .name,
+.VPHero .text {
+  font-family: "Michroma", "Manrope", sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+.vp-doc h1 {
+  font-size: 34px;
+  line-height: 1.25;
+}
+.vp-doc h2 {
+  border-top-color: rgba(232, 205, 160, 0.1);
+  letter-spacing: -0.01em;
+}
+.VPNavBarTitle .title {
+  font-family: "Michroma", sans-serif;
+  letter-spacing: 0.24em;
+  font-size: 15px;
+}
+
+/* tables */
+.vp-doc table {
+  display: table;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.vp-doc th {
+  background: #120e0a;
+  color: #ffd9a1;
+  font-weight: 600;
+}
+.vp-doc tr:nth-child(2n) {
+  background: rgba(226, 179, 110, 0.03);
+}
+
+/* feature cards on the home page */
+.VPFeature {
+  border: 1px solid rgba(232, 205, 160, 0.14) !important;
+  background: linear-gradient(160deg, #15100b 0%, #0b0907 100%) !important;
+}
+.VPFeature .title {
+  color: #ffd9a1;
+}
+
+/* mermaid diagrams sit on a panel */
+.vp-doc .mermaid {
+  background: #0d0a07;
+  border: 1px solid rgba(232, 205, 160, 0.12);
+  border-radius: 14px;
+  padding: 22px 12px;
+  margin: 18px 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* stat strip used on a few pages */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.stats .stat {
+  border: 1px solid rgba(232, 205, 160, 0.14);
+  border-radius: 12px;
+  padding: 16px 18px;
+  background: #0f0b08;
+}
+.stats .stat b {
+  display: block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 26px;
+  color: #ffd9a1;
+  font-weight: 500;
+}
+.stats .stat span {
+  font-size: 13px;
+  color: #9a8b74;
+}

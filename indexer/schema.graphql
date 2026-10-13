@@ -1,0 +1,173 @@
+# Silica read model, built entirely from contract events (Envio HyperIndex v3).
+
+type Series {
+  id: ID!                     # seriesId
+  token: String!
+  gpu: String!
+  region: String!
+  week: Int!
+  deliveryStart: BigInt!
+  deliveryEnd: BigInt!
+  mark: BigInt!               # USDC per hour, 6 dp
+  markUpdatedAt: BigInt!
+  mintedHours: BigInt!
+  redeemedHours: BigInt!
+  openInterestHours: BigInt!  # minted - redeemed
+  volumeHours: BigInt!
+  volumeUsdc: BigInt!
+  tradeCount: Int!
+  lastPrice: BigInt!
+  bondLocked: BigInt!
+  candles: [Candle!]! @derivedFrom(field: "series")
+  levels: [Level!]! @derivedFrom(field: "series")
+  trades: [Trade!]! @derivedFrom(field: "series")
+}
+
+type ForwardPoint {
+  id: ID!                     # seriesId; the app joins these into the forward curve
+  series: Series!
+  week: Int!
+  deliveryStart: BigInt!
+  mark: BigInt!
+  updatedAt: BigInt!
+}
+
+type Provider {
+  id: ID!                     # address (lowercase)
+  nodeKey: String!
+  bondLocked: BigInt!
+  bondSlashed: BigInt!
+  hoursMinted: BigInt!
+  hoursConfirmed: BigInt!
+  hoursMissed: BigInt!
+  hoursDisputed: BigInt!
+  reliabilityBps: Int!
+  marginCalls: Int!
+  openMarginCalls: Int!
+  positions: [Position!]! @derivedFrom(field: "provider")
+  tickets: [Ticket!]! @derivedFrom(field: "provider")
+}
+
+type Position {
+  id: ID!                     # provider-seriesId
+  provider: Provider!
+  series: Series!
+  bond: BigInt!
+  minted: BigInt!
+  settled: BigInt!
+  bondRatioBps: Int!          # 0 = series default
+  marginCalled: Boolean!
+}
+
+type Ticket {
+  id: ID!
+  series: Series!
+  provider: Provider!
+  holder: String!
+  hours: Int!
+  confirmed: Int!
+  missed: Int!
+  disputed: Int!
+  priceAtOpen: BigInt!
+  slashPaid: BigInt!
+  status: String!             # Open | AccessPosted | Settled
+  openedAt: BigInt!
+  accessDeadline: BigInt!
+  accessPostedAt: BigInt!
+  holderKey: String!
+  probeKey: String!
+  nodeKey: String!
+  ciphertext: String!
+  redeemTx: String!
+  accessTx: String!
+  verdicts: [HourVerdict!]! @derivedFrom(field: "ticket")
+}
+
+type HourVerdict {
+  id: ID!                     # ticketId-hour
+  ticket: Ticket!
+  hour: Int!
+  kind: String!               # confirmed | missed | disputed
+  at: BigInt!
+  txHash: String!
+}
+
+type Order {
+  id: ID!
+  series: Series!
+  owner: String!
+  isBid: Boolean!
+  price: BigInt!
+  hours: Int!
+  remaining: Int!
+  status: String!             # open | filled | cancelled
+  createdAt: BigInt!
+}
+
+type Level {
+  id: ID!                     # seriesId-bid|ask-price
+  series: Series!
+  isBid: Boolean!
+  price: BigInt!
+  hours: BigInt!
+}
+
+type Trade {
+  id: ID!
+  series: Series!
+  makerOrderId: BigInt!
+  maker: String!
+  taker: String!
+  takerBuys: Boolean!
+  hours: Int!
+  price: BigInt!
+  at: BigInt!
+  txHash: String!
+}
+
+type Candle {
+  id: ID!                     # seriesId-bucketStart (1-hour buckets)
+  series: Series!
+  bucketStart: BigInt!
+  open: BigInt!
+  high: BigInt!
+  low: BigInt!
+  close: BigInt!
+  volumeHours: BigInt!
+}
+
+type MarginCallEvent {
+  id: ID!
+  provider: Provider!
+  series: Series!
+  shortfall: BigInt!
+  at: BigInt!
+  resolved: Boolean!
+  resolvedAt: BigInt!
+  txHash: String!
+}
+
+type CreReport {
+  id: ID!
+  scheduledAt: BigInt!
+  verdicts: Int!
+  applied: Int!
+  marks: Int!
+  ratios: Int!
+  checks: Int!
+  relayed: Boolean!
+  at: BigInt!
+  txHash: String!
+}
+
+type Stats {
+  id: ID!                     # "global"
+  tickets: Int!
+  hoursRedeemed: BigInt!
+  hoursConfirmed: BigInt!
+  hoursMissed: BigInt!
+  slashedUsdc: BigInt!
+  trades: Int!
+  volumeUsdc: BigInt!
+  reports: Int!
+}

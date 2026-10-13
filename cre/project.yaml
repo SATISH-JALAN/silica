@@ -1,0 +1,10 @@
+# Chainlink CRE project for Silica. RPC for Monad Testnet; the CLI also reads .env
+# (CRE_ETH_PRIVATE_KEY = the funded relayer key, used only with --broadcast).
+staging-settings:
+  rpcs:
+    - chain-name: monad-testnet
+      url: https://testnet-rpc.monad.xyz
+production-settings:
+  rpcs:
+    - chain-name: monad-testnet
+      url: https://testnet-rpc.monad.xyz

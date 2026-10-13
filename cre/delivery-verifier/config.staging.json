@@ -1,0 +1,10 @@
+{
+  "chainName": "monad-testnet",
+  "oracle": "0xF5d5419A6f1DaA315fa6b1312e24A639D33d2a52",
+  "gasLimit": "900000",
+  "schedule": "0 */1 * * * *",
+  "redemptionManager": "0xf21bd145cd5C7d306033bfdF5FE9Cf87c3738dab",
+  "agentUrl": "http://127.0.0.1:8081",
+  "probeUrl": "http://127.0.0.1:8082",
+  "maxVerdicts": 4
+}

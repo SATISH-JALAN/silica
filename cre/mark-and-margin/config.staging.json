@@ -1,0 +1,25 @@
+{
+  "chainName": "monad-testnet",
+  "oracle": "0xF5d5419A6f1DaA315fa6b1312e24A639D33d2a52",
+  "gasLimit": "1500000",
+  "schedule": "0 */5 * * * *",
+  "seriesRegistry": "0x7889B29861aF261026a1aaa9983954DE0E76D8a6",
+  "silicaBook": "0x783d37B75E294A92cF54c017dF9FA7e8A05c9Be3",
+  "bondVault": "0xa730F61B3A0c0f3042EEd7b458EcF3aD392bFa00",
+  "envioUrl": "http://127.0.0.1:8080/v1/graphql",
+  "providers": [
+    "0x3e47F976d224d83F3d6994c5848A329E0ad5FbE0",
+    "0xB70b308f0563431eA89406DD6333b2802478D9bd"
+  ],
+  "kuru": {
+    "spotRouter": "0x008200AD02fCb7020B019D11Cbabd32FecE1De78",
+    "pricePrecision": 10000,
+    "markets": {
+      "1": "0xAc325AB01DfE0fbF5e3Ac422C87c62783Fb061fA",
+      "2": "0x39d3a741Caef7F15aF495748159BE451199F2104",
+      "3": "0xdbdDBCd51fB933c8249dc62AAE8F6bFd6133af96",
+      "4": "0xa5434ea6CADf6bDA1833eAFC2AFf2bE035F3c344",
+      "5": "0x461FFe3b6F562f228dBC421E7863b6FDbcfE68df"
+    }
+  }
+}

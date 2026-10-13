@@ -8,6 +8,11 @@ import type { Series } from "@/lib/mock";
 import { MIN_NOTIONAL_USDC, minOrderHours, slashPayout } from "@/lib/units";
 import { int, price, usd } from "@/lib/format";
 import { useWallet } from "@/lib/wallet";
+import { erc20Abi, maxUint256 } from "viem";
+import { mockUSDCAbi, silicaBookAbi } from "@silica/shared/abis";
+import { A, useBalances } from "@/lib/onchain";
+import { LIVE, tokenOf } from "@/lib/series";
+import { explain, txUrl, useSend } from "@/lib/tx";
 
 type Side = "buy" | "sell";
 
@@ -32,9 +37,14 @@ export function OrderForm({
   const [type, setType] = useState<"limit" | "market">("limit");
   const [px, setPx] = useState(price(series.mark));
   const [hrs, setHrs] = useState("20");
-  const [bal, setBal] = useState({ usdc: 1_000, hours: 40 });
-  const [status, setStatus] = useState<{ tone: "ok" | "err"; msg: string } | null>(null);
-  const [pending, setPending] = useState(false);
+  const [demoBal, setBal] = useState({ usdc: 1_000, hours: 40 });
+  const [status, setStatus] = useState<{ tone: "ok" | "err"; msg: React.ReactNode } | null>(null);
+  const [demoPending, setPending] = useState(false);
+  const token = tokenOf(series);
+  const chain = useBalances(address, token);
+  const { send, pending: sending } = useSend();
+  const bal = LIVE ? { usdc: chain.usdc, hours: chain.hours } : demoBal;
+  const pending = LIVE ? !!sending : demoPending;
 
   useEffect(() => {
     if (!picked) return;
@@ -62,9 +72,59 @@ export function OrderForm({
   const crosses = type === "market" || (side === "buy" ? p >= bestAsk : p <= bestBid);
   const fillPx = type === "market" ? p : side === "buy" ? Math.min(p, bestAsk) : Math.max(p, bestBid);
 
+  const submitLive = async () => {
+    setStatus(null);
+    try {
+      const sid = BigInt(series.seriesId);
+      // one-time approvals, then the order itself
+      if (side === "buy" && chain.usdcAllowance < BigInt(Math.ceil(notional * 1e6) + 1)) {
+        await send("Approving USDC", { address: A.usdc, abi: mockUSDCAbi, functionName: "approve", args: [A.book, maxUint256] });
+      }
+      if (side === "sell" && token && chain.tokenAllowance < BigInt(h) * 10n ** 18n) {
+        await send("Approving tokens", { address: token, abi: erc20Abi, functionName: "approve", args: [A.book, maxUint256] });
+      }
+      const priceTick = BigInt(Math.round(p * 100)) * 10_000n;
+      const r =
+        type === "limit"
+          ? await send("Placing order", { address: A.book, abi: silicaBookAbi, functionName: "placeLimit", args: [sid, side === "buy", priceTick, h] })
+          : side === "buy"
+            ? await send("Buying", { address: A.book, abi: silicaBookAbi, functionName: "marketBuy", args: [sid, h, BigInt(Math.ceil(notional * 1.05 * 1e6))] })
+            : await send("Selling", { address: A.book, abi: silicaBookAbi, functionName: "marketSell", args: [sid, h, BigInt(Math.floor(notional * 0.95 * 1e6))] });
+      void chain.refetch();
+      onFill(side, h, fillPx);
+      setStatus({
+        tone: r.ok ? "ok" : "err",
+        msg: (
+          <>
+            {r.ok ? (crosses ? `Filled up to ${int(h)} h, confirmed on Monad` : `Resting ${side} ${int(h)} h @ $${price(p)} on the book`) : "Transaction reverted"} ·{" "}
+            <a className="underline" href={txUrl(r.hash)} target="_blank" rel="noreferrer">
+              view tx ↗
+            </a>
+          </>
+        ),
+      });
+    } catch (e) {
+      setStatus({ tone: "err", msg: explain(e) });
+    }
+  };
+
+  const faucet = async () => {
+    try {
+      const r = await send("Faucet", { address: A.usdc, abi: mockUSDCAbi, functionName: "faucet" });
+      void chain.refetch();
+      setStatus({ tone: r.ok ? "ok" : "err", msg: r.ok ? "+1,000 test USDC" : "Faucet reverted" });
+    } catch (e) {
+      setStatus({ tone: "err", msg: explain(e) });
+    }
+  };
+
   const submit = contextSafe(async () => {
     if (!address) return connect();
     if (err) return;
+    if (LIVE) {
+      gsap.fromTo(".of-submit", { scale: 0.98 }, { scale: 1, duration: 0.4, ease: "back.out(3)" });
+      return submitLive();
+    }
     setPending(true);
     setStatus(null);
     // optimistic for < 1s, then confirm, as on Monad
@@ -138,7 +198,7 @@ export function OrderForm({
           side === "buy" ? "bg-bid text-void hover:shadow-[0_0_30px_rgba(130,196,156,0.35)]" : "bg-ask text-void hover:shadow-[0_0_30px_rgba(226,113,93,0.35)]"
         }`}
       >
-        {!address ? "Connect wallet to trade" : pending ? "Confirming on Monad…" : `${side === "buy" ? "Buy" : "Sell"} ${Number.isFinite(h) ? int(h) : 0} h ${series.code}`}
+        {!address ? "Connect wallet to trade" : pending ? `${sending ?? "Confirming"} on Monad…` : `${side === "buy" ? "Buy" : "Sell"} ${Number.isFinite(h) ? int(h) : 0} h ${series.code}`}
       </button>
       <Toast show={!!status} tone={status?.tone}>
         {status?.msg}
@@ -158,7 +218,18 @@ export function OrderForm({
           </p>
         </div>
       </div>
-      <p className="mt-3 text-[10px] leading-relaxed text-ash">Demo balances. Orders are simulated locally until Silica&apos;s contracts and Kuru markets are live on Monad Testnet.</p>
+      {LIVE ? (
+        <div className="mt-3 flex items-center justify-between gap-3">
+          <p className="text-[10px] leading-relaxed text-ash">Testnet USDC only. Orders settle on SilicaBook (Monad Testnet).</p>
+          {address && (
+            <button type="button" onClick={faucet} disabled={pending} className="shrink-0 rounded-full border border-line px-3 py-1 text-[11px] text-sand transition-colors hover:border-gold/50 hover:text-cream disabled:opacity-40">
+              Get test USDC
+            </button>
+          )}
+        </div>
+      ) : (
+        <p className="mt-3 text-[10px] leading-relaxed text-ash">Demo balances. Orders are simulated locally until Silica&apos;s contracts are deployed.</p>
+      )}
     </div>
   );
 }

@@ -7,11 +7,13 @@ import { ForwardCurve } from "@/components/markets/ForwardCurve";
 import { SplitReveal } from "@/components/ui/motion";
 import { Magnetic } from "@/components/ui/pointer";
 import { SectionLabel } from "./SectionLabel";
-import { SERIES } from "@/lib/mock";
+import { SERIES_LIST as SERIES } from "@/lib/series";
+import { useCurveMarks } from "@/lib/market";
 import { utcDay } from "@/lib/format";
 
 export function CurveSection() {
   const root = useRef<HTMLElement>(null);
+  const marks = useCurveMarks();
 
   useGSAP(
     () => {
@@ -51,9 +53,9 @@ export function CurveSection() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,rgba(226,179,110,0.12),transparent_60%)]" />
         <div className="relative mb-2 flex items-center justify-between">
           <p className="label">H100-80GB · APAC · USDC per GPU-hour</p>
-          <p className="num text-[11px] text-dust">W44 → W47 · mark via CRE</p>
+          <p className="num text-[11px] text-dust">W{SERIES[0].week} → W{SERIES[SERIES.length - 1].week} · mark via CRE</p>
         </div>
-        <ForwardCurve height={360} points={SERIES.map((s) => ({ label: `W${s.week}`, sub: utcDay(s.deliveryStart), value: s.mark }))} />
+        <ForwardCurve height={360} points={SERIES.map((s, i) => ({ label: `W${s.week}`, sub: utcDay(s.deliveryStart), value: marks[i] }))} />
       </div>
     </section>
   );

@@ -6,12 +6,42 @@ import { gsap, useGSAP, MOTION_OK } from "@/animations/gsap";
 import { ForwardCurve } from "./ForwardCurve";
 import { BondGauge, DemoBadge, PageHeader, Sparkline } from "@/components/ui/kit";
 import { NumberRoll } from "@/components/ui/motion";
-import { candlesFor, PLANNED, SERIES } from "@/lib/mock";
+import { candlesFor, PLANNED, type Series } from "@/lib/mock";
 import { useLiveMarks } from "@/lib/live";
+import { LIVE, SERIES_LIST as SERIES } from "@/lib/series";
+import { useSeriesLive } from "@/lib/onchain";
+import { useCandles, useSeriesStats } from "@/lib/envio";
+
+/** Live marks from the chain when deployed; the drifting demo marks otherwise */
+function useMarks() {
+  const demo = useLiveMarks(SERIES);
+  const live = useSeriesLive();
+  return LIVE ? SERIES.map((s) => live.map.get(s.seriesId)?.mark ?? s.mark) : demo;
+}
+
+function Spark({ s, up }: { s: Series; up: boolean }) {
+  const c = useCandles(s.seriesId).data?.Candle;
+  const values = LIVE ? (c ?? []).slice(-48).map((x) => Number(x.close) / 1e6) : candlesFor(s, 48).map((x) => x.close);
+  return values.length > 1 ? <Sparkline values={values} up={up} className="h-10 w-28" /> : <span className="num text-[10px] text-ash">no trades yet</span>;
+}
 import { compact, int, price, signedPct, usd, utcDay } from "@/lib/format";
 
 export function MarketsView() {
-  const marks = useLiveMarks(SERIES);
+  const marks = useMarks();
+  const stats = useSeriesStats().data?.Series;
+  const statOf = (s: Series) => stats?.find((x) => Number(x.id) === s.seriesId);
+  const supply = useSeriesLive().map;
+  // live numbers: open interest from token supply (chain), volume and bond from Envio
+  const view = SERIES.map((s) => {
+    const e = statOf(s);
+    return {
+      ...s,
+      openInterestHours: LIVE ? (supply.get(s.seriesId)?.supplyHours ?? 0) : s.openInterestHours,
+      volumeHours: LIVE ? Number(e?.volumeHours ?? 0) : s.volumeHours,
+      bondLocked: LIVE ? Number(e?.bondLocked ?? 0) / 1e6 : s.bondLocked,
+      volumeUsdc: LIVE ? Number(e?.volumeUsdc ?? 0) / 1e6 : s.volumeHours * s.mark,
+    };
+  });
   const root = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -27,20 +57,20 @@ export function MarketsView() {
     { scope: root },
   );
 
-  const totalOI = SERIES.reduce((a, s) => a + s.openInterestHours, 0);
-  const totalVol = SERIES.reduce((a, s) => a + s.volumeHours * s.mark, 0);
-  const totalBond = SERIES.reduce((a, s) => a + s.bondLocked, 0);
+  const totalOI = view.reduce((a, s) => a + s.openInterestHours, 0);
+  const totalVol = view.reduce((a, s) => a + s.volumeUsdc, 0);
+  const totalBond = view.reduce((a, s) => a + s.bondLocked, 0);
 
   return (
     <div ref={root}>
       <PageHeader label="Markets · H100-80GB · APAC" title="The compute forward curve">
-        <DemoBadge>Testnet · simulated liquidity</DemoBadge>
+        <DemoBadge>{LIVE ? "Monad Testnet · simulated liquidity" : "Demo data · not deployed"}</DemoBadge>
       </PageHeader>
 
       <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line lg:grid-cols-4">
         {[
           ["Open interest", `${compact(totalOI)} h`],
-          ["24h volume", usd(totalVol, 0)],
+          [LIVE ? "Volume traded" : "24h volume", usd(totalVol, 0)],
           ["Bond locked", usd(totalBond, 0)],
           ["Series live", `${SERIES.length} weeks`],
         ].map(([k, v]) => (
@@ -61,9 +91,8 @@ export function MarketsView() {
       </section>
 
       <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-        {SERIES.map((s, i) => {
-          const candles = candlesFor(s, 48);
-          const coverage = s.bondLocked / (s.openInterestHours * s.mark * 1.5);
+        {view.map((s, i) => {
+          const coverage = s.openInterestHours > 0 ? s.bondLocked / (s.openInterestHours * marks[i] * 1.5) : 1;
           return (
             <Link key={s.id} href={`/markets/${s.id}`} className="mk-card panel group relative block overflow-hidden p-6 transition-colors duration-500 hover:border-gold/40">
               <div className="pointer-events-none absolute -right-24 -top-24 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(226,179,110,0.16),transparent_65%)] opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
@@ -81,9 +110,13 @@ export function MarketsView() {
                   <p className="num text-3xl text-cream">
                     $<NumberRoll value={marks[i]} format={price} duration={0.4} />
                   </p>
-                  <p className={`num mt-1 text-xs ${s.change24h >= 0 ? "text-bid" : "text-ask"}`}>{signedPct(s.change24h)} 24h</p>
+                  {LIVE ? (
+                    <p className="num mt-1 text-xs text-dust" suppressHydrationWarning>{Date.now() >= s.deliveryStart.getTime() && Date.now() <= s.deliveryEnd.getTime() ? "delivering now" : "forward"}</p>
+                  ) : (
+                    <p className={`num mt-1 text-xs ${s.change24h >= 0 ? "text-bid" : "text-ask"}`}>{signedPct(s.change24h)} 24h</p>
+                  )}
                 </div>
-                <Sparkline values={candles.map((c) => c.close)} up={s.change24h >= 0} className="h-10 w-28" />
+                <Spark s={s} up={s.change24h >= 0} />
               </div>
               <div className="relative mt-6 grid grid-cols-2 gap-3 text-[11px]">
                 <div>
@@ -91,7 +124,7 @@ export function MarketsView() {
                   <p className="num mt-0.5 text-sand">{int(s.openInterestHours)} h</p>
                 </div>
                 <div>
-                  <p className="text-dust">Volume 24h</p>
+                  <p className="text-dust">{LIVE ? "Volume" : "Volume 24h"}</p>
                   <p className="num mt-0.5 text-sand">{int(s.volumeHours)} h</p>
                 </div>
               </div>

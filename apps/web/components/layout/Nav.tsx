@@ -7,6 +7,7 @@ import { gsap, useGSAP, ScrollTrigger, MOTION_OK } from "@/animations/gsap";
 import { Emblem } from "@/components/brand/Emblem";
 import { Wordmark } from "@/components/brand/Wordmark";
 import { useWallet } from "@/lib/wallet";
+import { useAccountModal } from "@rainbow-me/rainbowkit";
 import { shortAddr } from "@/lib/format";
 
 const LINKS = [
@@ -21,7 +22,8 @@ export function Nav() {
   const root = useRef<HTMLElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const { address, chainOk, connecting, connect, disconnect, error } = useWallet();
+  const { address, chainOk, connecting, connect, disconnect, error, switchToMonad } = useWallet();
+  const { openAccountModal } = useAccountModal();
 
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 24);
@@ -117,11 +119,11 @@ export function Nav() {
             Monad Testnet · <span className="num">10143</span>
           </span>
           <button
-            onClick={address ? disconnect : connect}
+            onClick={!address ? connect : !chainOk ? switchToMonad : openAccountModal ?? disconnect}
             title={error ?? undefined}
             className="nav-item rounded-full border border-gold/40 bg-gold/10 px-4 py-2 text-[12px] font-medium text-cream transition-[color,background-color,border-color,box-shadow] hover:border-gold hover:bg-gold/20"
           >
-            {connecting ? "Connecting…" : address ? <span className="num">{shortAddr(address)}{chainOk ? "" : " · wrong network"}</span> : "Connect wallet"}
+            {connecting ? "Connecting…" : address ? <span className="num">{shortAddr(address)}{chainOk ? "" : " · switch network"}</span> : "Connect wallet"}
           </button>
           <button
             className="nav-item flex h-9 w-9 items-center justify-center rounded-full border border-line md:hidden"

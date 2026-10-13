@@ -43,12 +43,13 @@ export type Series = {
   providers: number;
 };
 
-const WEEKS = [44, 45, 46, 47];
-const MARKS = [2.05, 2.12, 2.09, 2.18];
-const CHANGE = [0.0124, -0.0071, 0.0032, 0.0188];
-const OI = [8_640, 6_120, 4_480, 2_960];
-const VOL = [3_215, 1_904, 1_122, 640];
-const BOND_FACTOR = [0.41, 0.36, 0.33, 0.31]; // bond as a share of open notional
+// W42 is the live demo week (redeemable now); W44–W47 form the forward curve
+const WEEKS = [42, 44, 45, 46, 47];
+const MARKS = [2.02, 2.05, 2.12, 2.09, 2.18];
+const CHANGE = [0.0061, 0.0124, -0.0071, 0.0032, 0.0188];
+const OI = [3_120, 8_640, 6_120, 4_480, 2_960];
+const VOL = [2_410, 3_215, 1_904, 1_122, 640];
+const BOND_FACTOR = [0.44, 0.41, 0.36, 0.33, 0.31]; // bond as a share of open notional
 
 export const SERIES: Series[] = WEEKS.map((week, i) => {
   const start = isoWeekStart(2026, week);

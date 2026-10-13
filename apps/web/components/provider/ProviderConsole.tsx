@@ -5,9 +5,16 @@ import { gsap, useGSAP, MOTION_OK } from "@/animations/gsap";
 import { BondGauge, DemoBadge, Field, PageHeader, Row, Select, Toast } from "@/components/ui/kit";
 import { NumberRoll } from "@/components/ui/motion";
 import { PROVIDERS, SERIES } from "@/lib/mock";
-import { requiredBond, REPUTATION_BOND_RATIO_BPS, DEFAULT_BOND_RATIO_BPS } from "@/lib/units";
+import { requiredBond, REPUTATION_BOND_RATIO_BPS, DEFAULT_BOND_RATIO_BPS, PENALTY_BOND_RATIO_BPS } from "@/lib/units";
 import { int, pct, shortAddr, usd } from "@/lib/format";
 import { useWallet } from "@/lib/wallet";
+import { LIVE } from "@/lib/series";
+import { ProviderConsoleLive } from "./ProviderConsoleLive";
+
+/** Live console on a deployment; the seeded demo console otherwise */
+export function ProviderConsole() {
+  return LIVE ? <ProviderConsoleLive /> : <ProviderConsoleDemo />;
+}
 
 type Position = { seriesId: string; bond: number; minted: number; assigned: number; settled: number; marginCalled: boolean };
 
@@ -20,7 +27,7 @@ const INITIAL: Position[] = [
   { seriesId: SERIES[3].id, bond: 420, minted: 1_100, assigned: 0, settled: 0, marginCalled: true },
 ];
 
-export function ProviderConsole() {
+function ProviderConsoleDemo() {
   const root = useRef<HTMLDivElement>(null);
   const { address } = useWallet();
   const [positions, setPositions] = useState(INITIAL);
@@ -115,7 +122,7 @@ export function ProviderConsole() {
             <p className="label">Bond ratio from reputation</p>
             <p className="mt-3 text-sm text-sand">
               Ratio drops from <span className="num text-cream">{DEFAULT_BOND_RATIO_BPS / 100}%</span> to{" "}
-              <span className="num text-cream">{REPUTATION_BOND_RATIO_BPS / 100}%</span> after 1,000 confirmed hours at 99% or better. Read from Envio, applied by CRE Mark &amp; Margin.
+              <span className="num text-cream">{REPUTATION_BOND_RATIO_BPS / 100}%</span> after 1,000 confirmed hours at 99% or better, and rises to {PENALTY_BOND_RATIO_BPS / 100}% if reliability falls below 95% over 10+ hours. Read from Envio, applied by CRE Mark &amp; Margin.
             </p>
           </div>
           <p className="num text-3xl text-gold-hot">{ratioBps / 100}%</p>
@@ -239,7 +246,7 @@ export function ProviderConsole() {
   );
 }
 
-function Stat({ k, v, tone = "text-cream" }: { k: string; v: React.ReactNode; tone?: string }) {
+export function Stat({ k, v, tone = "text-cream" }: { k: string; v: React.ReactNode; tone?: string }) {
   return (
     <div className="pc-stat bg-night px-5 py-4">
       <p className="label !text-[9px]">{k}</p>

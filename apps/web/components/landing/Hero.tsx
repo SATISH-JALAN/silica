@@ -9,7 +9,8 @@ import { Sparkle } from "@/components/brand/Sparkle";
 import { scrollToId } from "@/components/ui/motion";
 import { Magnetic } from "@/components/ui/pointer";
 import { whenIntroDone } from "@/animations/intro";
-import { SERIES } from "@/lib/mock";
+import { LIVE, SERIES_LIST as SERIES } from "@/lib/series";
+import { useCurveMarks } from "@/lib/market";
 import { price, signedPct } from "@/lib/format";
 
 // Orbit paths sweep across the frame like the hairlines in the key art
@@ -154,7 +155,8 @@ export function Hero() {
     { scope: root },
   );
 
-  const tickerItems = [...SERIES, ...SERIES];
+  const marks = useCurveMarks();
+  const tickerItems = [...SERIES, ...SERIES].map((s, i) => ({ ...s, mark: marks[i % SERIES.length] }));
 
   return (
     <section ref={root} className="relative flex min-h-[100svh] flex-col overflow-hidden" aria-label="Silica">
@@ -281,7 +283,11 @@ export function Hero() {
               <Link key={i} href={`/markets/${s.id}`} className="flex items-center gap-4 border-r border-line px-8 py-3 text-xs transition-[color,background-color,border-color,box-shadow] hover:bg-white/[0.02]">
                 <span className="font-display text-[10px] tracking-[0.2em] text-sand">{s.code}</span>
                 <span className="num text-cream">${price(s.mark)}</span>
-                <span className={`num ${s.change24h >= 0 ? "text-bid" : "text-ask"}`}>{signedPct(s.change24h)}</span>
+                {LIVE ? (
+                  <span className="num text-dust">mark</span>
+                ) : (
+                  <span className={`num ${s.change24h >= 0 ? "text-bid" : "text-ask"}`}>{signedPct(s.change24h)}</span>
+                )}
               </Link>
             ))}
           </div>

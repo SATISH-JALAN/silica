@@ -3,6 +3,7 @@
 
 export const DEFAULT_BOND_RATIO_BPS = 3000; // 30% of notional
 export const REPUTATION_BOND_RATIO_BPS = 2000; // after 1,000 confirmed hours at 99%+
+export const PENALTY_BOND_RATIO_BPS = 4000; // reliability under 95% over 10+ hours
 export const DEFAULT_SLASH_MULT_BPS = 15000; // 1.5x reference price per missed hour
 export const MIN_NOTIONAL_USDC = 10; // Kuru minimum order notional
 export const ACCESS_DEADLINE_MIN = 30;

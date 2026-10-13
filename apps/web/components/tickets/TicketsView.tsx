@@ -11,11 +11,18 @@ import { countdown, int, usd, utcDay } from "@/lib/format";
 import { useWallet } from "@/lib/wallet";
 import { TicketTimeline } from "./TicketTimeline";
 import { AccessReveal } from "./AccessReveal";
+import { LIVE } from "@/lib/series";
+import { TicketsViewLive } from "./TicketsViewLive";
+
+/** Live redemptions on a deployment; the seeded demo otherwise */
+export function TicketsView() {
+  return LIVE ? <TicketsViewLive /> : <TicketsViewDemo />;
+}
 
 type Mode = "healthy" | "outage" | "probe";
 const DEMO_HOUR_MS = 1800;
 
-export function TicketsView() {
+function TicketsViewDemo() {
   const root = useRef<HTMLDivElement>(null);
   const now = useNow();
   const { address, connect } = useWallet();
@@ -179,7 +186,7 @@ export function TicketsView() {
   );
 }
 
-function TicketCard({ t }: { t: Ticket }) {
+export function TicketCard({ t, access }: { t: Ticket; access?: React.ReactNode }) {
   const slash = slashPayout(t.missed, t.priceAtOpen);
   const pill =
     t.status === "Settled"
@@ -210,11 +217,7 @@ function TicketCard({ t }: { t: Ticket }) {
         <Cell k="Slash paid to you" v={<NumberRoll value={slash} format={(n) => usd(n)} />} tone="text-gold-hot" />
       </div>
 
-      {t.status !== "Open" && (
-        <div className="mt-5">
-          <AccessReveal ticketId={t.id} provider={t.provider} />
-        </div>
-      )}
+      {t.status !== "Open" && <div className="mt-5">{access ?? <AccessReveal ticketId={t.id} provider={t.provider} />}</div>}
     </article>
   );
 }

@@ -14,6 +14,13 @@ services:
     region: singapore
     branch: main
     healthCheckPath: /health
+    # redeploy only when the services' code changes (docs or web pushes don't restart them)
+    buildFilter:
+      paths:
+        - services/**
+        - packages/shared/**
+        - Dockerfile.services
+        - render.yaml
     envVars:
       - key: SERVICE
         value: agent,mm
@@ -47,6 +54,13 @@ services:
     region: singapore
     branch: main
     healthCheckPath: /health
+    # redeploy only when the services' code changes (docs or web pushes don't restart them)
+    buildFilter:
+      paths:
+        - services/**
+        - packages/shared/**
+        - Dockerfile.services
+        - render.yaml
     envVars:
       - key: SERVICE
         value: probe,relay

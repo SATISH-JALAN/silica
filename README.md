@@ -10,6 +10,8 @@ Every exchange listing compute today (CME, ICE·Ornn, Kalshi, Injective) is cash
 
 Monad Metropolis · Track 1 (Onchain Finance & Trading) · bounties: Kuru, Chainlink CRE, Envio.
 
+**Live:** [silica-monard.vercel.app](https://silica-monard.vercel.app) · proof page [`/status`](https://silica-monard.vercel.app/status) · Envio GraphQL [endpoint](https://indexer.dev.hyperindex.xyz/581ef33/v1/graphql)
+
 ---
 
 ## How it works

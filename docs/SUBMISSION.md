@@ -8,10 +8,11 @@ Silica turns GPU time into a commodity you can buy forward, trade and rely on: b
 
 ## Links
 
-- Live app: [Vercel URL]
+- Live app: https://silica-monard.vercel.app
 - Repo: https://github.com/SATISH-JALAN/silica (MIT; shared with metropolis@hackathon.monad.xyz)
-- Proof page: [Vercel URL]/status (contracts, CRE reports, sample transactions)
-- Envio GraphQL: [Envio Cloud URL]
+- Proof page: https://silica-monard.vercel.app/status (contracts, CRE reports, Kuru listing status, sample transactions)
+- Envio GraphQL: https://indexer.dev.hyperindex.xyz/581ef33/v1/graphql
+- Services (simulated provider node, buyer probe): https://silica-agent.onrender.com/health · https://silica-probe.onrender.com/health
 - Videos: technical demo [link] · pitch [link] · CRE [link] · Envio [link]
 
 ## Judge access (testnet only)

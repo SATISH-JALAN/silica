@@ -19,3 +19,37 @@ cre/.cre
 # misc
 .DS_Store
 *.log
+
+# service heartbeat stores and bot state (local runtime data)
+services/data
+
+# internal docs (kept local, never pushed)
+doc/
+
+# CRE build intermediates
+cre/**/.cre_build_tmp.js
+
+# foundry dry runs (real broadcasts are kept as deployment records)
+contracts/broadcast/**/dry-run/
+
+# build output and caches
+dist/
+build/
+coverage/
+.turbo/
+.vercel/
+.eslintcache
+
+# editors, OS and local tooling
+.vscode/
+.idea/
+.claude/
+*.swp
+*.bak
+Thumbs.db
+desktop.ini
+
+# keys
+*.pem
+*.key
+keystore/

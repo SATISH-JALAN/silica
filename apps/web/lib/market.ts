@@ -17,6 +17,8 @@ export type MarketView = {
   mark: number;
   book: { bids: { price: number; hours: number }[]; asks: { price: number; hours: number }[] };
   trades: Trade[];
+  /** every recent fill, newest first (up to 300), for the price chart */
+  tape: Trade[];
   candles: Candle[] | null | undefined; // undefined = demo history
   addTrade: (t: Omit<Trade, "id" | "at">) => void;
   refresh: () => void;
@@ -26,7 +28,7 @@ export type MarketView = {
 function useMarketLive(series: Series): MarketView {
   const live = useSeriesLive().map.get(series.seriesId);
   const book = useBookLive(series.seriesId);
-  const envioTrades = useTrades(series.seriesId);
+  const envioTrades = useTrades(series.seriesId, 300);
   const envioCandles = useCandles(series.seriesId);
   const [streamed, setStreamed] = useState<Trade[]>([]);
 
@@ -84,7 +86,7 @@ function useMarketLive(series: Series): MarketView {
     }));
     const seen = new Set(indexed.map((t) => t.id));
     const fresh = streamed.filter((t) => !seen.has(t.id));
-    return [...fresh, ...indexed].slice(0, 30);
+    return [...fresh, ...indexed];
   }, [envioTrades.data, streamed]);
 
   const candles = useMemo<Candle[] | null | undefined>(() => {
@@ -103,7 +105,8 @@ function useMarketLive(series: Series): MarketView {
   return {
     mark: live?.mark ?? series.mark,
     book: { bids: book.bids, asks: book.asks },
-    trades,
+    trades: trades.slice(0, 30),
+    tape: trades,
     candles: HAS_ENVIO ? (candles ?? []) : [],
     addTrade: () => {},
     refresh: () => void book.refetch(),
@@ -113,7 +116,7 @@ function useMarketLive(series: Series): MarketView {
 
 function useMarketDemo(series: Series): MarketView {
   const m = useLiveMarket(series);
-  return { ...m, candles: undefined, refresh: () => {}, source: "demo" };
+  return { ...m, tape: m.trades, candles: undefined, refresh: () => {}, source: "demo" };
 }
 
 /** Chosen once at build time from the deployment file, so hook order never changes. */

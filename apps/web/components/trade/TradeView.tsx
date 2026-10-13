@@ -19,7 +19,7 @@ import { BondRiskPanel } from "./BondRiskPanel";
 
 export function TradeView({ seriesId }: { seriesId: string }) {
   const base = getSeriesBySlug(seriesId)!;
-  const { mark, book, trades, candles, addTrade, refresh, source } = useMarket(base);
+  const { mark, book, trades, tape, candles, addTrade, refresh, source } = useMarket(base);
   // live series numbers from Envio (open interest, bond); demo values otherwise
   const stats = useSeriesStats().data?.Series.find((x) => Number(x.id) === base.seriesId);
   const series = stats
@@ -92,7 +92,7 @@ export function TradeView({ seriesId }: { seriesId: string }) {
       <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_300px_340px]">
         <div className="flex min-w-0 flex-col gap-4">
           <section className="tv-panel panel h-[440px] overflow-hidden p-2">
-            <PriceChart series={base} lastTrade={trades[0]} history={candles} />
+            <PriceChart series={base} lastTrade={trades[0]} history={candles} tape={tape} mark={mark} />
           </section>
           <section className="tv-panel panel overflow-hidden">
             <p className="label px-4 pt-4">Recent trades</p>
@@ -101,24 +101,23 @@ export function TradeView({ seriesId }: { seriesId: string }) {
         </div>
         <section className="tv-panel panel overflow-hidden xl:self-start">
           <div className="flex items-center justify-between gap-2 px-4 pt-4">
-            <p className="label">Order book</p>
-            {kuruBook.live ? (
-              <div className="flex rounded-full border border-line p-0.5 text-[10px]">
+            <p className="label whitespace-nowrap">Order book</p>
+            {kuruBook.live && (
+              <div className="flex shrink-0 rounded-full border border-line p-0.5 text-[10px]">
                 {(["silica", "kuru"] as const).map((v) => (
                   <button
                     key={v}
                     type="button"
                     onClick={() => setVenue(v)}
-                    className={`rounded-full px-2.5 py-1 transition-colors ${venue === v ? "bg-gold/15 text-cream" : "text-ash hover:text-cream"}`}
+                    className={`whitespace-nowrap rounded-full px-2.5 py-1 transition-colors ${venue === v ? "bg-gold/15 text-cream" : "text-ash hover:text-cream"}`}
                   >
-                    {v === "silica" ? "SilicaBook" : "Kuru Spot V2"}
+                    {v === "silica" ? "SilicaBook" : "Kuru"}
                   </button>
                 ))}
               </div>
-            ) : (
-              LIVE && kuruBook.market && <span className="text-[10px] text-ash">Kuru Spot V2 · listing requested</span>
             )}
           </div>
+          {!kuruBook.live && LIVE && kuruBook.market && <p className="px-4 pt-1 text-[10px] text-ash">SilicaBook · Kuru Spot V2 listing requested</p>}
           <OrderBook book={onKuru ? { bids: kuruBook.bids, asks: kuruBook.asks } : book} mark={mark} onPick={(p, side) => setPicked({ price: p, side, n: Date.now() })} />
           {onKuru && (
             <p className="px-4 pb-4 pt-2 text-[10px] text-ash">

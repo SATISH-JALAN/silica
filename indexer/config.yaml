@@ -48,7 +48,7 @@ chains:
     start_block: 70687435
     rpc:
       - url: https://testnet-rpc.monad.xyz
-        for: sync
+        for: fallback
     contracts:
       - name: SeriesRegistry
         address: "0x7889B29861aF261026a1aaa9983954DE0E76D8a6"

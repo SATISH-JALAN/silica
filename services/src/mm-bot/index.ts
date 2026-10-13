@@ -104,6 +104,37 @@ async function cancel(m: Maker, o: Open) {
   save();
 }
 
+/**
+ * Rebuild a maker's open orders from the chain (SilicaBook levels), so a restart or a fresh
+ * container never stacks a second ladder on top of the orders it already has.
+ */
+async function reconcile(m: Maker) {
+  const me = m.w.account.address.toLowerCase();
+  const found: Open[] = [];
+  for (const s of seriesList(d)) {
+    const [bp, , ap] = await publicClient.readContract({ address: book, abi: silicaBookAbi, functionName: "depth", args: [BigInt(s.seriesId), 20n] });
+    const levels = [...bp.map((p) => ({ isBid: true, p })), ...ap.map((p) => ({ isBid: false, p }))];
+    if (!levels.length) continue;
+    const lists = await publicClient.multicall({
+      contracts: levels.map((l) => ({ address: book, abi: silicaBookAbi, functionName: "levelOrders", args: [BigInt(s.seriesId), l.isBid, l.p, 50n] }) as const),
+      allowFailure: false,
+    });
+    const ids = (lists as readonly (readonly bigint[])[]).flat().filter((id) => id !== 0n);
+    if (!ids.length) continue;
+    const os = await publicClient.multicall({
+      contracts: ids.map((id) => ({ address: book, abi: silicaBookAbi, functionName: "orders", args: [id] }) as const),
+      allowFailure: false,
+    });
+    os.forEach((o, i) => {
+      const [, owner, isBid, price, rem] = o as readonly [bigint, Address, boolean, bigint, number, bigint, bigint];
+      if (owner.toLowerCase() === me && Number(rem) > 0) found.push({ id: ids[i].toString(), seriesId: s.seriesId, isBid, price: price.toString(), hrs: Number(rem) });
+    });
+  }
+  state[m.name] = found;
+  save();
+  log.info("reconciled open orders from chain", { maker: m.name, open: found.length });
+}
+
 async function balances(m: Maker, token: Address) {
   const me = m.w.account.address;
   const [usdc, tok] = await Promise.all([
@@ -120,11 +151,14 @@ async function cycle(m: Maker) {
     const want = m.plan(info.markPrice);
     const mine = (state[m.name] ?? []).filter((o) => o.seriesId === s.seriesId);
 
-    // drop orders that are filled, partly eaten, or no longer at a wanted price
+    // drop orders that are filled, partly eaten, duplicated, or no longer at a wanted price
+    const seen = new Set<string>();
     for (const o of mine) {
       const rem = await remaining(o.id);
-      const keep = rem >= o.hrs / 2 && want.some((q) => q.isBid === o.isBid && q.price.toString() === o.price);
-      if (!keep) await cancel(m, o);
+      const key = `${o.isBid}:${o.price}`;
+      const keep = rem >= o.hrs / 2 && !seen.has(key) && want.some((q) => q.isBid === o.isBid && q.price.toString() === o.price);
+      if (keep) seen.add(key);
+      else await cancel(m, o);
     }
     const live = (state[m.name] ?? []).filter((o) => o.seriesId === s.seriesId);
     let { usdc, hours } = await balances(m, s.token);
@@ -150,6 +184,7 @@ const kuruCycle = venues.includes("kuru")
 async function main() {
   log.info("quoting", { makers: makers.map((m) => m.name), venues, levels: env.LEVELS, spreadTicks: env.SPREAD_TICKS });
   for (const m of makers) await approvals(m);
+  for (const m of makers) await reconcile(m);
   for (;;) {
     if (kuruCycle) await kuruCycle().catch((e) => log.warn("kuru cycle failed", { err: String(e).slice(0, 200) }));
     for (const m of venues.includes("silica") ? makers : []) {

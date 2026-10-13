@@ -6,7 +6,7 @@
   "seriesRegistry": "0x7889B29861aF261026a1aaa9983954DE0E76D8a6",
   "silicaBook": "0x783d37B75E294A92cF54c017dF9FA7e8A05c9Be3",
   "bondVault": "0xa730F61B3A0c0f3042EEd7b458EcF3aD392bFa00",
-  "envioUrl": "http://127.0.0.1:8080/v1/graphql",
+  "envioUrl": "https://indexer.dev.hyperindex.xyz/581ef33/v1/graphql",
   "providers": [
     "0x3e47F976d224d83F3d6994c5848A329E0ad5FbE0",
     "0xB70b308f0563431eA89406DD6333b2802478D9bd"

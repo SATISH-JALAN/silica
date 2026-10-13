@@ -4,7 +4,7 @@
   "gasLimit": "900000",
   "schedule": "0 */1 * * * *",
   "redemptionManager": "0xf21bd145cd5C7d306033bfdF5FE9Cf87c3738dab",
-  "agentUrl": "http://127.0.0.1:8081",
-  "probeUrl": "http://127.0.0.1:8082",
+  "agentUrl": "https://silica-agent.onrender.com",
+  "probeUrl": "https://silica-probe.onrender.com",
   "maxVerdicts": 4
 }

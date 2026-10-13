@@ -12,14 +12,14 @@ Never put a private key in the repo or in any `NEXT_PUBLIC_*` variable. Service 
 
 ## 2 · Services on Railway (one service per process)
 
-Each service is the `services/` package on Node 22 with `pnpm install`, started with its own command. Deploy each one from the repo root so the workspace packages resolve.
+All four services share one image, `Dockerfile.services` at the repo root, which is tested locally. On Railway, create four services from the GitHub repo. For each one, set **Settings → Build → Dockerfile path** to `Dockerfile.services` and add a `SERVICE` variable that picks the process. The image contains no keys (`.dockerignore` excludes every `.env`), so put the keys in each service's Variables.
 
-| Service | Start command | Variables |
+| Service | `SERVICE` | Variables |
 | --- | --- | --- |
-| provider-agent | `pnpm --filter @silica/services agent` | `PROVIDER_A_KEY`, `NODE_A_KEY`, `PROVIDER_B_KEY`, `NODE_B_KEY`, `AGENT_PORT` (= Railway `PORT`), `RPC_URL` |
-| buyer-probe | `pnpm --filter @silica/services probe` | `PROBE_KEY`, `AGENT_URL` (agent's public URL), `PROBE_PORT` (= `PORT`), `RPC_URL` |
-| mm-bot | `pnpm --filter @silica/services mm` | `MM_KEY`, `PROVIDER_A_KEY`, `LEVELS=2`, `SIZES=15,25`, `RPC_URL` |
-| cre-relay | `pnpm --filter @silica/services relay` | `RELAYER_KEY`, `PROVIDER_A_ADDRESS`, `PROVIDER_B_ADDRESS`, `AGENT_URL`, `PROBE_URL`, `ENVIO_URL`, `RELAY_MODE=local`, `RPC_URL` |
+| provider-agent | `agent` | `PROVIDER_A_KEY`, `NODE_A_KEY`, `PROVIDER_B_KEY`, `NODE_B_KEY`, `AGENT_PORT` (= Railway `PORT`), `RPC_URL` |
+| buyer-probe | `probe` | `PROBE_KEY`, `AGENT_URL` (agent's public URL), `PROBE_PORT` (= `PORT`), `RPC_URL` |
+| mm-bot | `mm` | `MM_KEY`, `PROVIDER_A_KEY`, `LEVELS=2`, `SIZES=15,25`, `RPC_URL` |
+| cre-relay | `relay` | `RELAYER_KEY`, `PROVIDER_A_ADDRESS`, `PROVIDER_B_ADDRESS`, `AGENT_URL`, `PROBE_URL`, `ENVIO_URL`, `RELAY_MODE=local`, `RPC_URL` |
 
 - Give the agent and the probe public domains. The web app's demo controls call them.
 - Hosted, the relay uses `RELAY_MODE=local`, the testnet `relayReport()` path, because `cre workflow simulate` needs the CRE CLI and a login. To run CRE itself while you record, use your own machine with `cre login` and `RELAY_MODE=cre pnpm relay`. `/status` labels each report with the path it took.

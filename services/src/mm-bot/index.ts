@@ -8,8 +8,8 @@
  * VENUES=silica,kuru also quotes the same ladder on any Kuru Spot V2 book Kuru has verified
  * for our series (./kuru.ts); until then the Kuru venue is a no-op.
  */
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { erc20Abi, maxUint256, type Address } from "viem";
 import { z } from "zod";
 import { mockUSDCAbi, seriesList, seriesRegistryAbi, silicaBookAbi, TICK } from "@silica/shared";
@@ -62,6 +62,7 @@ if (env.PROVIDER_A_KEY)
 
 // open orders per maker, persisted so a restart can cancel what it left behind
 const stateFile = join(ROOT, "services/data/mm.json");
+mkdirSync(dirname(stateFile), { recursive: true });
 type Open = { id: string; seriesId: number; isBid: boolean; price: string; hrs: number };
 const state: Record<string, Open[]> = existsSync(stateFile) ? JSON.parse(readFileSync(stateFile, "utf8")) : {};
 const save = () => writeFileSync(stateFile, JSON.stringify(state, null, 1));

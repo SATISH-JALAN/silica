@@ -1,0 +1,30 @@
+{
+  "name": "@silica/services",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "agent": "tsx src/provider-agent/index.ts",
+    "probe": "tsx src/buyer-probe/index.ts",
+    "mm": "tsx src/mm-bot/index.ts",
+    "relay": "tsx src/cre-relay/index.ts",
+    "buyers": "tsx src/scripts/test-buyers.ts",
+    "demo:happy": "tsx src/scripts/demo.ts happy",
+    "demo:slash": "tsx src/scripts/demo.ts slash",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hono/node-server": "1.19.6",
+    "@silica/shared": "workspace:*",
+    "@toxicflow-labs/ts-sdk": "0.3.0",
+    "dotenv": "17.2.3",
+    "hono": "4.10.6",
+    "viem": "2.40.3",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3"
+  }
+}

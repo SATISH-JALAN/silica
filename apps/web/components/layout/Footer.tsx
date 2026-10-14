@@ -42,8 +42,8 @@ function FooterCol({ title, links }: { title: string; links: [string, string][] 
                 {label} ↗
               </a>
             ) : href.startsWith("/docs") ? (
-              <a href={href} className="text-sm text-sand transition-[color,background-color,border-color,box-shadow] hover:text-gold-hot">
-                {label}
+              <a href={href} target="_blank" rel="noopener" className="text-sm text-sand transition-[color,background-color,border-color,box-shadow] hover:text-gold-hot">
+                {label} ↗
               </a>
             ) : (
               <Link href={href} className="text-sm text-sand transition-[color,background-color,border-color,box-shadow] hover:text-gold-hot">

@@ -15,7 +15,7 @@ const LINKS = [
   { href: "/provider", label: "Provider" },
   { href: "/tickets", label: "Tickets" },
   { href: "/status", label: "Status" },
-  // the static VitePress site, so it's a full page load rather than a client-side route
+  // the static VitePress site: opened in a new tab, since it is not a client-side route of the app
   { href: "/docs", label: "Docs", doc: true },
 ];
 
@@ -96,8 +96,8 @@ export function Nav() {
           {LINKS.map((l) => (
             <li key={l.href} className="nav-item">
               {l.doc ? (
-                <a href={l.href} className="relative rounded-full px-4 py-2 text-[13px] tracking-wide text-dust transition-colors hover:text-cream">
-                  {l.label}
+                <a href={l.href} target="_blank" rel="noopener" className="relative rounded-full px-4 py-2 text-[13px] tracking-wide text-dust transition-colors hover:text-cream">
+                  {l.label} <span aria-hidden="true">↗</span>
                 </a>
               ) : (
                 <Link
@@ -151,8 +151,8 @@ export function Nav() {
           {LINKS.map((l) => (
             <li key={l.href}>
               {l.doc ? (
-                <a href={l.href} className="block py-3 text-sm text-dust">
-                  {l.label}
+                <a href={l.href} target="_blank" rel="noopener" className="block py-3 text-sm text-dust">
+                  {l.label} ↗
                 </a>
               ) : (
                 <Link href={l.href} className={`block py-3 text-sm ${isActive(l.href) ? "text-cream" : "text-dust"}`}>

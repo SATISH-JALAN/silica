@@ -55,5 +55,5 @@ desktop.ini
 keystore/
 
 # docs site build output
-apps/docs/.vitepress/cache
-apps/docs/.vitepress/dist
+apps/web/docs/.vitepress/cache
+apps/web/public/docs

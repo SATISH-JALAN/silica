@@ -63,5 +63,5 @@ cd apps/web && pnpm dev      # http://localhost:3000 (see apps/web/.env.example)
 ## 6 · The docs
 
 ```bash
-pnpm --filter @silica/docs dev     # http://localhost:5173
+pnpm --filter web docs:dev         # http://localhost:5173/docs/
 ```

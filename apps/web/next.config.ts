@@ -11,6 +11,13 @@ const nextConfig: NextConfig = {
       ["@x402/core/client", "@x402/evm", "@x402/evm/exact/client", "@x402/evm/upto/client", "@x402/svm/exact/client"].map((m) => [m, "./lib/stubs/empty.js"]),
     ),
   },
+  // the VitePress docs are built into public/docs with clean URLs, so map them to their .html files
+  async rewrites() {
+    return [
+      { source: "/docs", destination: "/docs/index.html" },
+      { source: "/docs/:path*", destination: "/docs/:path*.html" },
+    ];
+  },
   // let the dev server serve assets when opened via 127.0.0.1 as well as localhost
   allowedDevOrigins: ["127.0.0.1"],
 };

@@ -23,7 +23,7 @@
   <a href="https://silica-monard.vercel.app">Live app</a> ·
   <a href="https://silica-monard.vercel.app/status">Proof page</a> ·
   <a href="https://indexer.dev.hyperindex.xyz/581ef33/v1/graphql">Envio GraphQL</a> ·
-  <a href="apps/docs">Docs site</a> ·
+  <a href="https://silica-monard.vercel.app/docs">Docs site</a> ·
   <a href="docs/SUBMISSION.md">Submission pack</a>
 </p>
 
@@ -336,8 +336,8 @@ Envio Cloud (indexer) → Render (`render.yaml`: agent + market maker, probe + r
 <summary><b>Docs site</b></summary>
 
 ```bash
-pnpm --filter @silica/docs dev        # http://localhost:5173
-pnpm --filter @silica/docs build      # static site in apps/docs/.vitepress/dist
+pnpm --filter web docs:dev           # http://localhost:5173/docs/
+pnpm --filter web docs:build         # built into apps/web/public/docs, served at /docs
 ```
 </details>
 
@@ -357,7 +357,7 @@ services/                  provider-agent · buyer-probe · mm-bot (+ Kuru venue
 cre/                       delivery-verifier · mark-and-margin (CRE TypeScript SDK)
 indexer/                   Envio HyperIndex v3: config generator, schema, handlers
 apps/web/                  Next.js 16 · wagmi + RainbowKit · Envio GraphQL · GSAP
-apps/docs/                 VitePress documentation site
+  docs/                    VitePress documentation site, served by the app at /docs
 docs/                      DEPLOY · SUBMISSION · kuru-listing
 render.yaml                Render Blueprint · Dockerfile.services
 ```

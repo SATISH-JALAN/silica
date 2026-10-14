@@ -18,7 +18,7 @@ export function Footer() {
         </div>
         <FooterCol title="Market" links={[["Markets", "/markets"], ["H100·APAC·W44", "/markets/h100-apac-w44"], ["Forward curve", "/markets#curve"]]} />
         <FooterCol title="Participants" links={[["Provider console", "/provider"], ["Redeem & tickets", "/tickets"], ["How it works", "/#lifecycle"]]} />
-        <FooterCol title="Proof" links={[["Status & contracts", "/status"], ["Monad explorer", "https://testnet.monadvision.com"], ["Faucet", "https://faucet.monad.xyz"]]} />
+        <FooterCol title="Proof" links={[["Status & contracts", "/status"], ["Documentation", "/docs"], ["Monad explorer", "https://testnet.monadvision.com"], ["Faucet", "https://faucet.monad.xyz"]]} />
       </div>
       <div className="border-t border-line">
         <div className="mx-auto flex max-w-[1400px] flex-col gap-2 px-4 py-5 text-[11px] text-ash sm:flex-row sm:items-center sm:justify-between sm:px-6">
@@ -40,6 +40,10 @@ function FooterCol({ title, links }: { title: string; links: [string, string][] 
             {href.startsWith("http") ? (
               <a href={href} target="_blank" rel="noreferrer" className="text-sm text-sand transition-[color,background-color,border-color,box-shadow] hover:text-gold-hot">
                 {label} ↗
+              </a>
+            ) : href.startsWith("/docs") ? (
+              <a href={href} className="text-sm text-sand transition-[color,background-color,border-color,box-shadow] hover:text-gold-hot">
+                {label}
               </a>
             ) : (
               <Link href={href} className="text-sm text-sand transition-[color,background-color,border-color,box-shadow] hover:text-gold-hot">

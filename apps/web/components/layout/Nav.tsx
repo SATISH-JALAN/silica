@@ -15,6 +15,8 @@ const LINKS = [
   { href: "/provider", label: "Provider" },
   { href: "/tickets", label: "Tickets" },
   { href: "/status", label: "Status" },
+  // the static VitePress site, so it's a full page load rather than a client-side route
+  { href: "/docs", label: "Docs", doc: true },
 ];
 
 export function Nav() {
@@ -93,19 +95,25 @@ export function Nav() {
         <ul className="hidden items-center gap-1 md:flex">
           {LINKS.map((l) => (
             <li key={l.href} className="nav-item">
-              <Link
-                href={l.href}
-                className={`relative rounded-full px-4 py-2 text-[13px] tracking-wide transition-colors ${
-                  isActive(l.href) ? "text-cream" : "text-dust hover:text-cream"
-                }`}
-              >
-                {l.label}
-                <span
-                  className={`absolute inset-x-4 -bottom-px h-px bg-gradient-to-r from-transparent via-gold to-transparent transition-opacity duration-500 ${
-                    isActive(l.href) ? "opacity-100" : "opacity-0"
+              {l.doc ? (
+                <a href={l.href} className="relative rounded-full px-4 py-2 text-[13px] tracking-wide text-dust transition-colors hover:text-cream">
+                  {l.label}
+                </a>
+              ) : (
+                <Link
+                  href={l.href}
+                  className={`relative rounded-full px-4 py-2 text-[13px] tracking-wide transition-colors ${
+                    isActive(l.href) ? "text-cream" : "text-dust hover:text-cream"
                   }`}
-                />
-              </Link>
+                >
+                  {l.label}
+                  <span
+                    className={`absolute inset-x-4 -bottom-px h-px bg-gradient-to-r from-transparent via-gold to-transparent transition-opacity duration-500 ${
+                      isActive(l.href) ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+                </Link>
+              )}
             </li>
           ))}
         </ul>
@@ -142,9 +150,15 @@ export function Nav() {
         <ul className="border-t border-line px-4 pb-4 md:hidden">
           {LINKS.map((l) => (
             <li key={l.href}>
-              <Link href={l.href} className={`block py-3 text-sm ${isActive(l.href) ? "text-cream" : "text-dust"}`}>
-                {l.label}
-              </Link>
+              {l.doc ? (
+                <a href={l.href} className="block py-3 text-sm text-dust">
+                  {l.label}
+                </a>
+              ) : (
+                <Link href={l.href} className={`block py-3 text-sm ${isActive(l.href) ? "text-cream" : "text-dust"}`}>
+                  {l.label}
+                </Link>
+              )}
             </li>
           ))}
         </ul>

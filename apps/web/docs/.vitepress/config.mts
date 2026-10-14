@@ -8,15 +8,18 @@ export default withMermaid(
     title: "Silica",
     description: "Deliverable, bond-backed GPU-hour forwards on Monad. Documentation.",
     lang: "en-US",
+    // served by the Next app at /docs: built into apps/web/public/docs before next build
+    base: "/docs/",
+    outDir: "../public/docs",
     appearance: "force-dark",
     cleanUrls: true,
     lastUpdated: true,
     head: [
-      ["link", { rel: "icon", href: "/emblem.webp" }],
+      ["link", { rel: "icon", href: "/docs/emblem.webp" }],
       ["meta", { name: "theme-color", content: "#060504" }],
       ["meta", { property: "og:title", content: "Silica Docs" }],
       ["meta", { property: "og:description", content: "Deliverable, bond-backed GPU-hour forwards on Monad." }],
-      ["meta", { property: "og:image", content: "/horizon.webp" }],
+      ["meta", { property: "og:image", content: "/docs/horizon.webp" }],
     ],
     markdown: { lineNumbers: false, theme: { light: "github-light", dark: "vitesse-dark" } },
     themeConfig: {
@@ -29,7 +32,7 @@ export default withMermaid(
         { text: "Architecture", link: "/architecture/overview" },
         { text: "Contracts", link: "/contracts/overview" },
         { text: "Integrations", link: "/integrations/chainlink-cre" },
-        { text: "Live app", link: "https://silica-monard.vercel.app" },
+        { text: "Open app", link: "https://silica-monard.vercel.app", target: "_self" },
       ],
       sidebar: [
         {
@@ -135,7 +138,7 @@ export default withMermaid(
         },
       ],
       socialLinks: [{ icon: "github", link: REPO }],
-      editLink: { pattern: `${REPO}/edit/main/apps/docs/:path`, text: "Edit this page on GitHub" },
+      editLink: { pattern: `${REPO}/edit/main/apps/web/docs/:path`, text: "Edit this page on GitHub" },
       outline: { level: [2, 3], label: "On this page" },
       footer: {
         message: "Testnet only. Simulated parts are labelled. MIT licensed.",

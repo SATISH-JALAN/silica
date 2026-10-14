@@ -47,7 +47,7 @@ NEXT_PUBLIC_HOUR_SECONDS=300
 
 ## The docs site
 
-The docs are a static VitePress build (`pnpm --filter @silica/docs build` → `apps/docs/.vitepress/dist`), deployable to any static host. On Vercel: root directory `apps/docs`, build command `pnpm build`, output `.vitepress/dist`.
+The docs live in `apps/web/docs` and ship with the web app: its `build` script runs `vitepress build docs` into `apps/web/public/docs` before `next build`, and `next.config.ts` rewrites the clean URLs to the built `.html` files. Every Vercel deploy of the app therefore publishes the docs at [`/docs`](https://silica-monard.vercel.app/docs) too, with no separate project.
 
 ## Operational notes
 

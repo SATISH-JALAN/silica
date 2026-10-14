@@ -36,17 +36,7 @@ Each provider has one `Position` per series:
 | `settled` | hours confirmed or slashed |
 | `marginCalled` | `true` while the bond is below the requirement |
 
-```mermaid
-stateDiagram-v2
-  [*] --> Bonded: depositBond
-  Bonded --> Issued: mint (bond ≥ requirement)
-  Issued --> Issued: more mints, trades
-  Issued --> MarginCalled: checkMargin finds bond < requirement
-  MarginCalled --> Issued: depositBond, then next checkMargin
-  Issued --> Delivering: redemptions assign hours (FIFO)
-  Delivering --> Settled: every assigned hour confirmed or slashed
-  Settled --> [*]: releaseBond after deliveryEnd
-```
+<Fig name="bondStates" />
 
 ## Moving collateral
 

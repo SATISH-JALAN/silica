@@ -35,33 +35,13 @@ What happens in that one transaction:
 | `holderKey`, `probeKey`, `nodeKey` | the keys used to seal access and to check signatures |
 | `status` | `Open` → `AccessPosted` → `Settled` |
 
-```mermaid
-stateDiagram-v2
-  [*] --> Open: redeem()
-  Open --> AccessPosted: postAccess() within 30 min
-  Open --> Settled: slashUnserved() after the deadline (every hour slashed)
-  AccessPosted --> AccessPosted: applyHour() per elapsed hour
-  AccessPosted --> Settled: confirmed + missed (+ resolved) = hrs
-  Settled --> [*]
-```
+<Fig name="ticketStates" />
 
 ## Sealed access
 
 The provider must post the credentials (SSH host, port, user, token, GPU id) **encrypted to the holder**. Nothing secret is ever stored in plaintext, onchain or off.
 
-```mermaid
-sequenceDiagram
-  actor H as Holder (browser)
-  participant R as RedemptionManager
-  participant A as provider-agent
-  H->>H: sign "Silica access key v1…" (no gas)
-  H->>H: X25519 key pair = derive(sha256(signature))
-  H->>R: redeem(..., holderKey = public key, ...)
-  R-->>A: TicketKeys(ticketId, holderKey, probeKey, nodeKey, deadline)
-  A->>A: seal credentials to holderKey (crypto_box_seal)
-  A->>R: postAccess(ticketId, ciphertext)
-  H->>H: sign again → same key → open the ciphertext locally
-```
+<Fig name="accessKey" />
 
 - The key is **derived, not stored**: signing the same fixed message with the same wallet always gives the same key, so the browser can recreate it whenever needed.
 - The ciphertext is a standard sealed box (`tweetnacl` + a BLAKE2b nonce, compatible with libsodium's `crypto_box_seal`).

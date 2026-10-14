@@ -16,16 +16,7 @@ A Silica token is the right to **one hour of one GPU model, in one region, in on
 
 Every series has its own token contract, deployed by `SeriesRegistry.createSeries`. Tokens of different series are different assets: a W44 hour is not a W45 hour, the same way a December futures contract is not a March one. That is what lets each series have its own order book and its own price.
 
-```mermaid
-flowchart TB
-  REG[SeriesRegistry.createSeries] --> T42[SIL·H100·APAC·W42<br/>demo week]
-  REG --> T44[SIL·H100·APAC·W44]
-  REG --> T45[SIL·H100·APAC·W45]
-  REG --> T46[SIL·H100·APAC·W46]
-  REG --> T47[SIL·H100·APAC·W47]
-  T44 -.->|own order book| B44[(W44 book)]
-  T45 -.->|own order book| B45[(W45 book)]
-```
+<Fig name="tokenFamily" />
 
 ## What the holder can do
 

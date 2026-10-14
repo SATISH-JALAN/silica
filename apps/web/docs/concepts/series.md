@@ -20,18 +20,7 @@ A **series** is one standardized contract: a GPU model, a region and an ISO deli
 
 ## The delivery window
 
-```mermaid
-gantt
-  title Series lifecycle (W44 example)
-  dateFormat YYYY-MM-DD
-  axisFormat %d %b
-  section Before delivery
-  Mint, trade, quote         :a1, 2026-10-12, 14d
-  section Delivery week
-  Redeem and deliver         :crit, a2, 2026-10-26, 7d
-  section After
-  Release bond               :a3, 2026-11-02, 3d
-```
+<Fig name="seriesLifecycle" />
 
 | Phase | What's allowed |
 | --- | --- |
@@ -49,13 +38,7 @@ gantt
 | `SIL·H100·APAC·W46` | 9–15 Nov | $2.09 | forward curve |
 | `SIL·H100·APAC·W47` | 16–22 Nov | $2.18 | forward curve |
 
-```mermaid
-xychart-beta
-  title "Forward curve at launch (USDC per H100-hour)"
-  x-axis [W42, W44, W45, W46, W47]
-  y-axis "Mark" 1.9 --> 2.25
-  line [2.02, 2.05, 2.12, 2.09, 2.18]
-```
+<Fig name="forwardCurve" />
 
 ::: info Why a demo week
 W44–W47 only start delivering on 26 October, so nothing in them could be redeemed during judging. The W42 series covers the current week so the full redeem → deliver → verify → slash path can be tried live. On testnet one delivery hour is 5 minutes (`RedemptionManager.hourSeconds = 300`).

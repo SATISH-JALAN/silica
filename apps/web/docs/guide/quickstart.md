@@ -49,18 +49,4 @@ Under **Delivery evidence · demo controls**, press **Provider outage**. The sim
 
 Open **/status**: every contract address with explorer links, each oracle report with the path it took (Chainlink CRE forwarder or the labelled testnet relay), Kuru listing status, and sample transactions.
 
-```mermaid
-journey
-  title A buyer's first ten minutes
-  section Set up
-    Connect wallet and switch to Monad Testnet: 4: Buyer
-    Get test USDC from the faucet: 5: Buyer
-  section Trade
-    Read the forward curve: 4: Buyer
-    Market-buy W42 hours: 5: Buyer
-  section Deliver
-    Redeem and decrypt access: 5: Buyer
-    Hour confirmed via CRE: 5: Buyer, Provider
-  section Protection
-    Provider outage → slash paid to buyer: 5: Buyer
-```
+<Fig name="quickstart" />

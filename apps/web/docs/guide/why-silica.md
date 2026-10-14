@@ -32,13 +32,7 @@ The bond replaces trust. A buyer doesn't need to know the provider: the provider
 
 Delivery verification is a high-frequency, high-cardinality workload.
 
-```mermaid
-xychart-beta
-  title "Delivery verdicts per week, by provider size"
-  x-axis ["8 GPUs", "16 GPUs", "32 GPUs", "64 GPUs", "128 GPUs"]
-  y-axis "Verdicts per week" 0 --> 22000
-  bar [1344, 2688, 5376, 10752, 21504]
-```
+<Fig name="verdictsPerWeek" />
 
 - One provider with **64 GPUs** produces **64 verdicts an hour**, or **10,752 a week**, each one a transaction that can move money.
 - **Every GPU × region × week is its own order book.** A modest catalogue (3 GPUs × 3 regions × 4 weeks) is already 36 live books.

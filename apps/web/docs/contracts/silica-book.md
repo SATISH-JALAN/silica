@@ -39,14 +39,4 @@
 
 Each price level is a doubly linked FIFO queue of orders, and each side keeps a sorted array of active prices, so the best price is always at the end of the array:
 
-```mermaid
-flowchart LR
-  subgraph Asks
-    A1["$2.04 → #12 → #31"] --- A2["$2.05 → #13"] --- A3["$2.08 → #40"]
-  end
-  subgraph Bids
-    B1["$2.02 → #11"] --- B2["$2.00 → #9 → #22"] --- B3["$1.99 → #10"]
-  end
-  T([marketBuy]) --> A1
-  S([marketSell]) --> B1
-```
+<Fig name="bookLevels" />

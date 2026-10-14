@@ -35,23 +35,7 @@ struct MarginCheck { address provider; uint256 seriesId; }
 
 ## Processing
 
-```mermaid
-flowchart TD
-  IN([report bytes]) --> D[abi.decode Report]
-  D --> C1{chainSelector matches?}
-  C1 -- no --> X1[revert WrongChain]
-  C1 -- yes --> C2{scheduledAt > last?}
-  C2 -- no --> X2[revert StaleReport]
-  C2 -- yes --> V[for each verdict]
-  V --> K["kind = _derive(verdict)<br/>recover both EIP-712 signers"]
-  K -->|no verdict| SK[emit VerdictSkipped]
-  K -->|0 · 1 · 2| AP["try redemption.applyHour(...)"]
-  AP -->|reverted| SK
-  AP --> MK[marks → registry.setMark]
-  MK --> RT[ratios → vault.setBondRatio]
-  RT --> CK[checks → vault.checkMargin]
-  CK --> EV[emit ReportReceived]
-```
+<Fig name="oracleFlow" />
 
 ## Signature checks
 

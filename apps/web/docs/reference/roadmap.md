@@ -1,13 +1,6 @@
 # Roadmap
 
-```mermaid
-timeline
-  title Silica beyond Metropolis
-  Now : Contracts, both CRE workflows, the Envio indexer and the app, live end to end on Monad Testnet : Kuru books prepared and requested
-  Phase 1 (months 1–2) : Kuru Spot V2 books live with our market maker : Pilot with 2–3 real GPU providers and 5 AI teams : Real node agent (nvidia-smi / DCGM) : CRE workflows on a DON, production forwarder : Kuru post-fill hooks for bond-aware quoting
-  Phase 2 (months 2–4) : External audit and legal sign-off : Multisig + timelock : Mainnet with four rolling weekly series and real USDC bonds : Reputation pricing live (20–40% bonds)
-  Phase 3 (months 4–9) : A100, H200, B200 and US / EU regions : Monthly series alongside weekly : Independent probe network : Lending markets that accept bonded compute as collateral
-```
+<Fig name="roadmap" />
 
 ## Phase 1 · Kuru launch and pilot
 

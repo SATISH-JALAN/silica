@@ -24,16 +24,7 @@ required = (minted − settled) × markPrice × bondRatio
 
 A margin-called provider **cannot mint** (`MarginCalled()`) until it deposits enough bond and the next check clears it.
 
-```mermaid
-flowchart LR
-  BOOK[(Order books)] -->|best bid / ask| W{{CRE Mark & Margin}}
-  ENV[(Envio: delivery record)] -->|confirmed · missed| W
-  VAULT[(BondVault positions)] -->|bond · minted · settled| W
-  W -->|setMark| REG[SeriesRegistry]
-  W -->|setBondRatio| V2[BondVault]
-  W -->|checkMargin| V2
-  V2 -->|MarginCall / MarginCleared| ENV
-```
+<Fig name="markMargin" />
 
 ## What a report contains
 

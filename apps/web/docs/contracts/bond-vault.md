@@ -51,15 +51,4 @@
 | `BPS` | `10_000` |
 | `HOUR_UNIT` | `1e18`, one hour of token |
 
-```mermaid
-flowchart LR
-  D[depositBond] --> M{mint: bond ≥ requirement<br/>and not margin-called?}
-  M -- yes --> T[tokens to provider]
-  M -- no --> E[revert BondTooLow / MarginCalled]
-  T --> A[assign on redeem, FIFO]
-  A --> S{verdict}
-  S -- confirmed --> SH[settleHours]
-  S -- missed --> SL[settleHours + slash → holder]
-  SH --> R[releaseBond after deliveryEnd]
-  SL --> R
-```
+<Fig name="bondVaultFlow" />

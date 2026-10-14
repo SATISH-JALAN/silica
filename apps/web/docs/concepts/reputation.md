@@ -14,13 +14,7 @@ reliability = confirmed / (confirmed + missed)
 | **Default** | everyone else, including new providers | **30%** |
 | **Penalty** | ≥ 10 delivered-or-missed hours **and** reliability < 95% | **40%** |
 
-```mermaid
-xychart-beta
-  title "Bond required for 1,000 open hours at a $2.05 mark"
-  x-axis ["Reputation 20%", "Default 30%", "Penalty 40%"]
-  y-axis "USDC" 0 --> 900
-  bar [410, 615, 820]
-```
+<Fig name="bondRatios" />
 
 - The **10-hour minimum** stops a single early miss from triggering the penalty on a new provider.
 - The ratio applies per position: `BondVault.bondRatioOf(provider, seriesId)` returns the override if CRE set one, otherwise the series default.
@@ -40,12 +34,4 @@ xychart-beta
 
 The same function, `ratioFor(confirmed, missed)` in `packages/shared/src/units.ts`, is compiled into the CRE Mark & Margin workflow and used by the testnet relay, so both paths always produce identical ratios.
 
-```mermaid
-flowchart LR
-  E[HoursConfirmed / HoursSlashed events] --> H[Envio handler<br/>recomputes reliabilityBps]
-  H --> G[(GraphQL: Provider)]
-  G --> C{{CRE Mark & Margin<br/>HTTP under consensus}}
-  C --> R["ratioFor(confirmed, missed)"]
-  R --> V[BondVault.setBondRatio]
-  V --> M[checkMargin → MarginCall?]
-```
+<Fig name="reputation" />

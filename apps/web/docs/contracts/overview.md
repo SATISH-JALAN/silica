@@ -28,49 +28,7 @@ Deployed at block **70687435**. Addresses are written by `script/Deploy.s.sol` t
 
 ## How the contracts connect
 
-```mermaid
-classDiagram
-  class SeriesRegistry {
-    +createSeries()
-    +setMark()  ORACLE
-    +getSeries()
-  }
-  class BondVault {
-    +depositBond() mint() withdrawExcess() releaseBond()  PROVIDER
-    +checkMargin() setBondRatio()  ORACLE
-    +assign() settleHours() slash()  REDEMPTION
-  }
-  class RedemptionManager {
-    +redeem() postAccess() slashUnserved() setNodeKey()
-    +applyHour()  ORACLE
-    +resolveDispute()  ARBITER
-  }
-  class DeliveryOracle {
-    +onReport()  forwarder
-    +relayReport()  RELAYER while simulationMode
-    +deriveKind() hourDigest()
-  }
-  class SilicaBook {
-    +placeLimit() marketBuy() marketSell() cancel()
-    +bestBidAsk() depth() levelOrders()
-  }
-  class SilicaToken {
-    +mint()  MINTER
-    +burn()  BURNER
-  }
-  class SilicaMarkFeed {
-    +fetchPrice() priceUsd18() observedAt()
-  }
-  SeriesRegistry --> SilicaToken : deploys
-  BondVault --> SilicaToken : mints
-  RedemptionManager --> SilicaToken : burns
-  RedemptionManager --> BondVault : assign · settle · slash
-  DeliveryOracle --> RedemptionManager : applyHour
-  DeliveryOracle --> SeriesRegistry : setMark
-  DeliveryOracle --> BondVault : ratios · margin
-  SilicaBook --> SilicaToken : escrow
-  SilicaMarkFeed --> SeriesRegistry : reads mark
-```
+<Fig name="contractsMap" />
 
 ## Tests
 

@@ -95,15 +95,11 @@
   color: #ffd9a1;
 }
 
-/* mermaid diagrams sit on a panel */
-.vp-doc .mermaid {
-  background: #0d0a07;
-  border: 1px solid rgba(232, 205, 160, 0.12);
-  border-radius: 14px;
-  padding: 22px 12px;
-  margin: 18px 0;
-  display: flex;
-  justify-content: center;
+/* a wider reading column on large screens, so the figures stay legible */
+@media (min-width: 1440px) {
+  .VPDoc.has-aside .content-container {
+    max-width: 800px !important;
+  }
 }
 
 /* stat strip used on a few pages */

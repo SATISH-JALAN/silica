@@ -9,23 +9,7 @@
 3. **Heartbeats:** samples its host checks every `hourSeconds / 14` seconds and stores them per ticket.
 4. **Signs hour summaries:** for each ended hour, counts successful checks (capped at 12) and signs an EIP-712 `HourSummary` with the provider's **node key**.
 
-```mermaid
-sequenceDiagram
-  participant R as RedemptionManager
-  participant A as provider-agent
-  participant C as CRE / probe
-  loop every few seconds
-    A->>R: getOpenTickets()
-  end
-  R-->>A: new ticket for NeoGPU
-  A->>A: seal creds to holderKey
-  A->>R: postAccess(ticketId, ciphertext)
-  loop every hourSeconds / 14
-    A->>A: heartbeat (nvidia-smi, simulated)
-  end
-  C->>A: GET /summary/:ticket/:hour
-  A-->>C: { okChecks, gpuIdHash, signer, signature }
-```
+<Fig name="agentSeq" />
 
 ## HTTP API
 

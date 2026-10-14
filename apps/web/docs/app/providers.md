@@ -6,17 +6,7 @@ Pre-sell idle GPU capacity weeks ahead and get paid as it trades, with your bond
 
 ## Onboarding (production design)
 
-```mermaid
-flowchart LR
-  K[KYB + service terms] --> R[PROVIDER_ROLE granted]
-  R --> N[Install the node agent<br/>register a node key: setNodeKey]
-  N --> D[depositBond per series]
-  D --> M[mint hours]
-  M --> Q[Quote asks, or let a market maker sell them]
-  Q --> S[Serve redemptions:<br/>post sealed access ≤ 30 min]
-  S --> V[Hours verified every hour via CRE]
-  V --> W[releaseBond after the week]
-```
+<Fig name="providerFlow" />
 
 On testnet the two providers, NeoGPU and Basalt Cloud, are seeded wallets with simulated nodes.
 

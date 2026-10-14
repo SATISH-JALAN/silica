@@ -13,19 +13,7 @@ paid   = min(payout, remaining bond for that provider and series)
 - A slash also **settles** those hours, so they stop counting against the provider's bond requirement.
 - The payout is capped at the bond that remains. The [margin system](/concepts/mark-and-margin) exists so the bond is never allowed to fall far below what open hours need.
 
-```mermaid
-sequenceDiagram
-  participant O as DeliveryOracle
-  participant R as RedemptionManager
-  participant V as BondVault
-  actor H as Holder
-  O->>R: applyHour(ticket, hour, MISSED)
-  R->>R: owed = 1 × priceAtOpen × 1.5
-  R->>V: settleHours(provider, series, 1)
-  R->>V: slash(provider, series, holder, owed)
-  V->>H: USDC transfer (min(owed, bond))
-  R-->>R: emit HoursSlashed(ticket, 1, paid) · HourVerdict(ticket, hour, 1)
-```
+<Fig name="slashSeq" />
 
 ### Three ways an hour gets slashed
 

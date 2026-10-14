@@ -6,19 +6,7 @@ A Silica token is one H100-80GB hour in one region and one ISO week. You can hol
 
 ## The flow
 
-```mermaid
-flowchart LR
-  A[Get USDC] --> B[Buy hours on the series book]
-  B --> C{Delivery week?}
-  C -- not yet --> D[Hold or sell back]
-  C -- yes --> E[Redeem whole hours]
-  E --> F[Sign once → your access key]
-  F --> G[Provider posts sealed access ≤ 30 min]
-  G --> H[Decrypt in the browser, use the GPU]
-  H --> I{Each hour}
-  I -- delivered --> J[Confirmed]
-  I -- missed --> K[1.5× paid to you]
-```
+<Fig name="buyerFlow" />
 
 ## Your protections
 

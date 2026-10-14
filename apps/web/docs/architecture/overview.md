@@ -2,68 +2,7 @@
 
 Silica has four layers: **contracts on Monad** that hold every rule and every dollar, **offchain services** that deliver and witness GPU time, **Chainlink CRE** that brings evidence and market data onchain, and **Envio** that turns events into the data both CRE and the app read.
 
-```mermaid
-flowchart TB
-  subgraph Users
-    BUY([Buyer / holder])
-    PROV([Provider])
-    JUDGE([Anyone])
-  end
-
-  subgraph App["Next.js app (Vercel)"]
-    UI[Markets · Trade · Tickets · Provider · Status]
-  end
-
-  subgraph Monad["Monad Testnet · chain 10143"]
-    REG[SeriesRegistry]
-    VAULT[BondVault]
-    TOK[SilicaToken × 5]
-    BOOK[SilicaBook]
-    RM[RedemptionManager]
-    ORA[DeliveryOracle]
-    FEED[SilicaMarkFeed × 5]
-    USDC[MockUSDC]
-  end
-
-  subgraph Services["Offchain services (Render)"]
-    AG[provider-agent]
-    PR[buyer-probe]
-    MM[mm-bot]
-    RL[cre-relay]
-  end
-
-  subgraph CRE["Chainlink CRE"]
-    DV{{Delivery Verifier}}
-    MAM{{Mark & Margin}}
-  end
-
-  ENV[(Envio HyperIndex · Envio Cloud)]
-  KURU[(Kuru Spot V2)]
-
-  BUY --> UI
-  PROV --> UI
-  UI -->|reads| ENV
-  UI -->|reads + writes| Monad
-  PROV -->|bond · mint| VAULT
-  BUY -->|trade| BOOK
-  BUY -->|redeem| RM
-  JUDGE -->|slashUnserved| RM
-  AG -->|postAccess| RM
-  AG -->|summaries| DV
-  PR -->|summaries| DV
-  MM -->|quotes| BOOK
-  MM -.->|quotes once listed| KURU
-  DV -->|report| ORA
-  MAM -->|report| ORA
-  RL -.->|testnet relay fallback| ORA
-  ENV -->|reliability| MAM
-  BOOK -->|bid / ask| MAM
-  KURU -.->|bid / ask| MAM
-  ORA --> RM
-  ORA --> REG
-  ORA --> VAULT
-  Monad -->|events| ENV
-```
+<Fig name="system" />
 
 ## Components
 
@@ -88,20 +27,7 @@ flowchart TB
 
 ## Roles and permissions
 
-```mermaid
-flowchart LR
-  ADMIN[Admin key<br/>testnet] -->|DEFAULT_ADMIN_ROLE| ALL[all contracts]
-  ORA[DeliveryOracle] -->|ORACLE_ROLE| REG[SeriesRegistry.setMark]
-  ORA -->|ORACLE_ROLE| V[BondVault.setBondRatio · checkMargin]
-  ORA -->|ORACLE_ROLE| RM[RedemptionManager.applyHour]
-  RM -->|REDEMPTION_ROLE| V2[BondVault.assign · settleHours · slash]
-  RM -->|BURNER_ROLE| T[SilicaToken.burn]
-  V -->|MINTER_ROLE| T2[SilicaToken.mint]
-  P[Providers] -->|PROVIDER_ROLE| V3[BondVault.depositBond · mint · withdraw · release]
-  RELAYER[Relayer key] -->|RELAYER_ROLE, simulationMode only| O2[DeliveryOracle.relayReport]
-  ARB[Arbiter] -->|ARBITER_ROLE| RD[RedemptionManager.resolveDispute]
-  FWD[CRE forwarder] -->|onReport| O3[DeliveryOracle]
-```
+<Fig name="roles" />
 
 | Role | Held by | Can |
 | --- | --- | --- |

@@ -13,15 +13,7 @@ A forward market is only useful if it has a book. Silica starts narrow on purpos
 
 ## Who supplies liquidity
 
-```mermaid
-flowchart TB
-  P[Providers] -->|asks: capacity they want to pre-sell| BOOK[(Series book)]
-  MM[Market maker] -->|two-sided ladder around the CRE mark| BOOK
-  KP[Kuru passive bands] -.->|once listed| KBOOK[(Kuru book)]
-  MM -.->|post-only ladder once listed| KBOOK
-  B[AI teams] -->|buy forward hours| BOOK
-  B -.-> KBOOK
-```
+<Fig name="liquidity" />
 
 1. **Providers' asks.** A provider sells the capacity it has bonded. Its asks sit a little away from the mid (on testnet NeoGPU quotes at mark + 6 and + 8 ticks).
 2. **A market maker.** It quotes both sides around the CRE mark and refreshes when the mark moves. On testnet this is the quote-only `mm-bot`; at launch, a partner market maker.

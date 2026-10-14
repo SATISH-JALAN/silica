@@ -19,37 +19,7 @@
 
 ## The entities
 
-```mermaid
-erDiagram
-  Series ||--o{ Candle : "1h buckets"
-  Series ||--o{ Level : "book depth"
-  Series ||--o{ Trade : trades
-  Series ||--|| ForwardPoint : "curve point"
-  Provider ||--o{ Position : "per series"
-  Provider ||--o{ Ticket : serves
-  Provider ||--o{ MarginCallEvent : "margin calls"
-  Series ||--o{ Position : ""
-  Ticket ||--o{ HourVerdict : "per hour"
-  Series ||--o{ Order : orders
-  Series {
-    BigInt mark
-    BigInt openInterestHours
-    BigInt bondLocked
-    BigInt volumeUsdc
-  }
-  Provider {
-    BigInt hoursConfirmed
-    BigInt hoursMissed
-    Int reliabilityBps
-    Int openMarginCalls
-  }
-  Ticket {
-    Int confirmed
-    Int missed
-    BigInt slashPaid
-    String ciphertext
-  }
-```
+<Fig name="envioEntities" />
 
 Plus `CreReport` (every oracle report and the path it took) and `Stats` (protocol totals).
 
@@ -73,19 +43,7 @@ indexer.onEvent({ contract: "RedemptionManager", event: "HoursSlashed" }, async 
 
 ## Feature 1: Envio sets the collateral
 
-```mermaid
-sequenceDiagram
-  participant R as RedemptionManager
-  participant E as Envio
-  participant C as CRE Mark & Margin
-  participant V as BondVault
-  R-->>E: HoursSlashed (provider missed an hour)
-  E->>E: Provider.reliabilityBps recomputed
-  C->>E: GraphQL: confirmed + missed per provider (under consensus)
-  C->>V: setBondRatio(provider, series, 4000)
-  C->>V: checkMargin(provider, series)
-  V-->>E: MarginCall(provider, series, shortfall)
-```
+<Fig name="envioSeq" />
 
 This loop ran live on testnet: NeoGPU's record in Envio fell below 95% (13 confirmed, 8 missed: 61.9%), CRE raised its ratio to 40%, and four `MarginCallEvent`s came straight back into the index (tx [`0x8dc3…19b0`](https://testnet.monadvision.com/tx/0x8dc3ab5edb43d9b5952eb7aa158c214cfd487960ed1dc2076c9e5efb2dfa19b0)).
 

@@ -4,23 +4,7 @@
 
 ## Two workflows
 
-```mermaid
-flowchart LR
-  subgraph DV["Delivery Verifier (cron)"]
-    D1[EVM read: open tickets,<br/>due hours, verdictApplied] --> D2[HTTP in node mode:<br/>provider + probe summaries]
-    D2 --> D3[consensusIdenticalAggregation]
-    D3 --> D4[buildVerdicts → encodeReport]
-    D4 --> D5[runtime.report → writeReport]
-  end
-  subgraph MM["Mark & Margin (cron)"]
-    M1[EVM read: marks, best bid/ask<br/>Kuru first, else SilicaBook] --> M2[HTTP in node mode:<br/>Envio GraphQL reliability]
-    M2 --> M3[consensusIdenticalAggregation]
-    M3 --> M4[marks · ratios · margin checks<br/>only what changed]
-    M4 --> M5[runtime.report → writeReport]
-  end
-  D5 --> O[DeliveryOracle on Monad]
-  M5 --> O
-```
+<Fig name="creWorkflows" />
 
 ### Delivery Verifier: `cre/delivery-verifier/main.ts`
 

@@ -27,36 +27,13 @@ HourSummary(uint256 ticketId, uint32 hour, uint8 okChecks, bytes32 gpuIdHash)
 
 ## Getting the evidence onchain
 
-```mermaid
-sequenceDiagram
-  participant A as provider-agent
-  participant Q as buyer-probe
-  participant C as CRE Delivery Verifier (every node)
-  participant O as DeliveryOracle
-  participant R as RedemptionManager
-  C->>R: read open tickets and due hours
-  C->>A: GET /summary/:ticket/:hour
-  C->>Q: GET /summary/:ticket/:hour
-  Note over C: consensusIdenticalAggregation: every node must see identical evidence
-  C->>O: writeReport(verdicts[])
-  O->>O: recover both EIP-712 signers, check okChecks + gpuIdHash
-  O->>R: applyHour(ticketId, hour, kind)
-```
+<Fig name="verifySeq" />
 
 ## The verdict rule
 
 `DeliveryOracle._derive()` turns the two summaries into one of four outcomes:
 
-```mermaid
-flowchart TD
-  S([Two summaries for one hour]) --> V{Either signature valid?}
-  V -- no --> N[No verdict: skipped, retried next run]
-  V -- yes --> U{Provider ≥ 11 AND probe ≥ 11<br/>AND same GPU?}
-  U -- yes --> C[Confirmed: kind 0]
-  U -- no --> M{Probe signature valid AND probe < 11<br/>AND provider not ≥ 11?}
-  M -- yes --> X[Missed: kind 1 → slash 1.5× to holder]
-  M -- no --> D[Disputed: kind 2 → held]
-```
+<Fig name="verdictRules" />
 
 | Provider node | Buyer probe | Outcome |
 | --- | --- | --- |

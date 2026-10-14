@@ -6,23 +6,7 @@ Kuru market creation and the token whitelist are **admin-only**: `whitelistSpotT
 
 ## What's prepared
 
-```mermaid
-flowchart LR
-  subgraph Silica["Built by Silica (done)"]
-    F[USD price feed per series<br/>SilicaMarkFeed]
-    P[Listing parameters]
-    A[Predicted book addresses<br/>SpotRouter.computeAddress]
-    W[Auto-switch in mm-bot, CRE, app]
-  end
-  subgraph Kuru["Kuru admin (requested)"]
-    K1[whitelistSpotToken]
-    K2[deploySpotMarket]
-  end
-  F --> K1
-  P --> K2
-  A --> K2
-  K2 -->|verifiedSpotMarket = true| W
-```
+<Fig name="kuruListing" />
 
 ### 1 · Price feeds
 

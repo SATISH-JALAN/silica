@@ -28,11 +28,9 @@
     "@types/node": "^22.20.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "mermaid": "11.4.1",
     "sharp": "^0.35.5",
     "tailwindcss": "4.3.3",
     "typescript": "5.9.3",
-    "vitepress": "1.6.3",
-    "vitepress-plugin-mermaid": "2.0.17"
+    "vitepress": "1.6.3"
   }
 }

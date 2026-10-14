@@ -7,16 +7,7 @@
 | `RELAY_MODE=cre` | spawns `cre workflow simulate <workflow> --broadcast` on each tick. Chainlink's forwarder writes the report; the relay sends nothing itself | on a machine with the CRE CLI and `cre login` |
 | `RELAY_MODE=local` | computes the same report in-process (the same shared verifier and ratio code) and sends it through `DeliveryOracle.relayReport` | hosted environments that can't run the CLI login; **testnet only**, refuses to start if `simulationMode` is off |
 
-```mermaid
-flowchart TD
-  T([tick]) --> V{RELAY_MODE}
-  V -- cre --> S1[cre workflow simulate delivery-verifier --broadcast]
-  V -- local --> L1[build verdicts in-process]
-  L1 --> RR[DeliveryOracle.relayReport]
-  S1 --> F[MockKeystoneForwarder → onReport]
-  T --> MT{MARGIN_EVERY elapsed?}
-  MT -- yes --> M[Mark & Margin, same two modes]
-```
+<Fig name="relayFlow" />
 
 Every report records its path (`relayed = true` for the relay), and `/status` shows it.
 

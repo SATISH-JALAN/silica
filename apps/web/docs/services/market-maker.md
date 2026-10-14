@@ -11,13 +11,7 @@ For every series still before its delivery end:
 | **market-maker** wallet | `LEVELS` bids and asks at `mark ± (SPREAD_TICKS + i) × $0.01` (hosted: 2 levels, sizes 15 and 25 hours) |
 | **NeoGPU** (provider asks) | asks at mark + 6 and mark + 8 ticks, 40 and 60 hours |
 
-```mermaid
-xychart-beta
-  title "W42 ladder around a $2.02 mark (hours per level)"
-  x-axis ["1.99", "2.00", "2.02 mark", "2.04", "2.05", "2.08", "2.10"]
-  y-axis "Hours" 0 --> 70
-  bar [25, 15, 0, 15, 25, 40, 60]
-```
+<Fig name="mmLadder" />
 
 ## Behaviour
 

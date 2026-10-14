@@ -25,12 +25,7 @@ This is reproduced exactly in `contracts/test/Silica.t.sol` (`test_WorkedExample
 | Paid to the buyer | 10 × $2.05 × 1.5 = **$30.75** |
 | Returned to the provider | $600 − $30.75 = **$569.25** |
 
-```mermaid
-pie showData
-  title "Where the $600 bond goes"
-  "Paid to the buyer for 10 missed hours" : 30.75
-  "Returned to the provider" : 569.25
-```
+<Fig name="bondSplit" />
 
 ## Worked example 2: how far a bond stretches
 

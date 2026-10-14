@@ -1,15 +1,6 @@
 # Deploy to Monad Testnet
 
-```mermaid
-flowchart LR
-  A[Deploy.s.sol] --> B[Seed.s.sol]
-  B --> C[DeployKuruFeeds.s.sol]
-  C --> D[gen-kuru.mjs]
-  D --> E[cre/gen-config.mjs]
-  E --> F[indexer/gen-config.mjs]
-  F --> G[Verify on Sourcify]
-  G --> H[Run CRE + services]
-```
+<Fig name="testnetPipeline" />
 
 ## 1 · Contracts
 

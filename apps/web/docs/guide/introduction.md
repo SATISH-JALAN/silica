@@ -12,16 +12,7 @@ Every delivery hour is checked twice: once by the provider's own node, and once 
 
 A second CRE workflow posts a new mark price for each series every hour, reads each provider's delivery record from **Envio**, and adjusts the provider's bond ratio. A provider whose bond no longer covers its open hours is **margin-called** and cannot mint until it tops up.
 
-```mermaid
-flowchart LR
-  A([Provider bonds and mints]) --> B([Tokens trade on the book])
-  B --> C([Holder redeems in the delivery week])
-  C --> D([Access sealed to the holder's key])
-  D --> E{{Every hour: two signed reports via CRE}}
-  E -->|both healthy| F([Confirmed: provider paid])
-  E -->|probe saw outage| G([Missed: bond pays holder 1.5×])
-  E -->|disagree| H([Disputed: held])
-```
+<Fig name="introFlow" />
 
 ## Who it's for
 

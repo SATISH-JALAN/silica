@@ -1,0 +1,209 @@
+/* Figures: every colour is a token, so one drawing serves the dark docs and the light README variant. */
+.dg-theme,
+.dg {
+  --dg-page: #080706;
+  --dg-box: #0e0b08;
+  --dg-surface: #14100b;
+  --dg-line: rgba(232, 205, 160, 0.13);
+  --dg-line-strong: rgba(232, 205, 160, 0.3);
+  --dg-text: #f3ead9;
+  --dg-text-2: #cdbfa6;
+  --dg-text-3: #988a74;
+  --dg-accent: #e2b36e;
+  --dg-accent-bg: #21190f;
+  --dg-good: #82c49c;
+  --dg-good-bg: #0f1a13;
+  --dg-bad: #e2715d;
+  --dg-bad-bg: #22110d;
+  --dg-monad: #a597ff;
+  --dg-monad-bg: #15122a;
+  --dg-cre: #7f9dff;
+  --dg-cre-bg: #0f1530;
+  --dg-envio: #f29a5c;
+  --dg-envio-bg: #24150b;
+  --dg-kuru: #5fcfc4;
+  --dg-kuru-bg: #0c1f1d;
+  --dg-service: #9db4c8;
+  --dg-service-bg: #10161b;
+}
+.dg-theme.dg-light,
+.dg-light .dg {
+  --dg-page: #fbf8f2;
+  --dg-box: #fffdf9;
+  --dg-surface: #f4eee3;
+  --dg-line: #e7decd;
+  --dg-line-strong: #c9bca5;
+  --dg-text: #1f1810;
+  --dg-text-2: #4d4132;
+  --dg-text-3: #7d6f5a;
+  --dg-accent: #9b6420;
+  --dg-accent-bg: #f7ebd7;
+  --dg-good: #2e7a4e;
+  --dg-good-bg: #e6f2ea;
+  --dg-bad: #b4432d;
+  --dg-bad-bg: #f9e6e1;
+  --dg-monad: #5a44d4;
+  --dg-monad-bg: #edeafd;
+  --dg-cre: #2c50c2;
+  --dg-cre-bg: #e7ecfb;
+  --dg-envio: #b65a1c;
+  --dg-envio-bg: #fbebdf;
+  --dg-kuru: #17857b;
+  --dg-kuru-bg: #e0f3f1;
+  --dg-service: #3d5a73;
+  --dg-service-bg: #e8eef4;
+}
+
+.dg { margin: 26px 0 30px; }
+.dg-frame {
+  overflow-x: auto;
+  border: 1px solid var(--dg-line);
+  border-radius: 14px;
+  background-color: var(--dg-page);
+  background-image: radial-gradient(var(--dg-line) 0.9px, transparent 0.9px);
+  background-size: 18px 18px;
+  padding: 18px;
+}
+.dg-svg { display: block; width: 100%; height: auto; font-family: "Manrope", ui-sans-serif, system-ui, sans-serif; }
+.dg-caption { margin-top: 10px; font-size: 13.5px; line-height: 1.55; color: var(--dg-text-3); text-align: center; text-wrap: balance; }
+
+.dg-node rect, .dg-node polygon { fill: var(--dg-box); stroke: var(--dg-line-strong); stroke-width: 1.2; }
+.dg-node.dg-accent rect, .dg-node.dg-accent polygon { fill: var(--dg-accent-bg); stroke: var(--dg-accent); }
+.dg-node.dg-muted rect { fill: var(--dg-surface); stroke: var(--dg-line); }
+.dg-node.dg-good rect { fill: var(--dg-good-bg); stroke: var(--dg-good); }
+.dg-node.dg-bad rect { fill: var(--dg-bad-bg); stroke: var(--dg-bad); }
+.dg-node.dg-monad rect { fill: var(--dg-monad-bg); stroke: var(--dg-monad); }
+.dg-node.dg-cre rect { fill: var(--dg-cre-bg); stroke: var(--dg-cre); }
+.dg-node.dg-envio rect { fill: var(--dg-envio-bg); stroke: var(--dg-envio); }
+.dg-node.dg-kuru rect { fill: var(--dg-kuru-bg); stroke: var(--dg-kuru); }
+.dg-node.dg-service rect { fill: var(--dg-service-bg); stroke: var(--dg-service); }
+.dg-node.dg-decision polygon { fill: var(--dg-surface); stroke: var(--dg-text-3); }
+
+.dg-title { font-size: 13px; font-weight: 650; fill: var(--dg-text); }
+.dg-sub { font-size: 11.5px; fill: var(--dg-text-2); }
+.dg-dim { fill: var(--dg-text-3); }
+.dg-mono { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 11px; }
+.dg-title.dg-mono { font-size: 12px; font-weight: 500; }
+.dg-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; fill: var(--dg-text-3); }
+.dg-big { font-size: 22px; font-weight: 700; fill: var(--dg-text); }
+.dg-rule { stroke: var(--dg-line-strong); stroke-width: 1; }
+
+.dg-zone rect { fill: none; stroke: var(--dg-line-strong); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.dg-zone-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; fill: var(--dg-text-3); }
+.dg-zone.dg-accent rect { stroke: var(--dg-accent); }
+.dg-zone.dg-accent .dg-zone-label { fill: var(--dg-accent); }
+.dg-zone.dg-monad rect { stroke: var(--dg-monad); }
+.dg-zone.dg-monad .dg-zone-label { fill: var(--dg-monad); }
+.dg-zone.dg-cre rect { stroke: var(--dg-cre); }
+.dg-zone.dg-cre .dg-zone-label { fill: var(--dg-cre); }
+.dg-zone.dg-envio rect { stroke: var(--dg-envio); }
+.dg-zone.dg-envio .dg-zone-label { fill: var(--dg-envio); }
+.dg-zone.dg-kuru rect { stroke: var(--dg-kuru); }
+.dg-zone.dg-kuru .dg-zone-label { fill: var(--dg-kuru); }
+.dg-zone.dg-service rect { stroke: var(--dg-service); }
+.dg-zone.dg-service .dg-zone-label { fill: var(--dg-service); }
+.dg-zone.dg-good rect { stroke: var(--dg-good); }
+.dg-zone.dg-good .dg-zone-label { fill: var(--dg-good); }
+.dg-zone.dg-bad rect { stroke: var(--dg-bad); }
+.dg-zone.dg-bad .dg-zone-label { fill: var(--dg-bad); }
+
+/* sequence section bands */
+.dg-band rect { fill: var(--dg-accent-bg); stroke: none; opacity: 0.55; }
+.dg-band.dg-good rect { fill: var(--dg-good-bg); }
+.dg-band.dg-bad rect { fill: var(--dg-bad-bg); }
+.dg-band.dg-cre rect { fill: var(--dg-cre-bg); }
+.dg-band.dg-monad rect { fill: var(--dg-monad-bg); }
+.dg-band .dg-zone-label { fill: var(--dg-accent); }
+.dg-band.dg-good .dg-zone-label { fill: var(--dg-good); }
+.dg-band.dg-bad .dg-zone-label { fill: var(--dg-bad); }
+.dg-band.dg-cre .dg-zone-label { fill: var(--dg-cre); }
+.dg-band.dg-monad .dg-zone-label { fill: var(--dg-monad); }
+
+.dg-edge path { fill: none; stroke: var(--dg-text-3); stroke-width: 1.4; stroke-linejoin: round; stroke-linecap: round; }
+.dg-edge polygon { fill: var(--dg-text-3); }
+.dg-edge .dg-dashed { stroke-dasharray: 5 4; }
+.dg-edge-accent path { stroke: var(--dg-accent); }
+.dg-edge-accent polygon { fill: var(--dg-accent); }
+.dg-edge-bad path { stroke: var(--dg-bad); }
+.dg-edge-bad polygon { fill: var(--dg-bad); }
+.dg-edge-good path { stroke: var(--dg-good); }
+.dg-edge-good polygon { fill: var(--dg-good); }
+.dg-edge-cre path { stroke: var(--dg-cre); }
+.dg-edge-cre polygon { fill: var(--dg-cre); }
+.dg-edge-envio path { stroke: var(--dg-envio); }
+.dg-edge-envio polygon { fill: var(--dg-envio); }
+.dg-edge-kuru path { stroke: var(--dg-kuru); }
+.dg-edge-kuru polygon { fill: var(--dg-kuru); }
+.dg-edge-monad path { stroke: var(--dg-monad); }
+.dg-edge-monad polygon { fill: var(--dg-monad); }
+/* a halo in the page colour keeps an edge label legible where it crosses a line */
+.dg-elabel { font-size: 11.5px; font-weight: 550; fill: var(--dg-text-2); paint-order: stroke; stroke: var(--dg-page); stroke-width: 4px; stroke-linejoin: round; }
+.dg-elabel-sub { font-weight: 400; fill: var(--dg-text-3); font-size: 11px; }
+.dg-lifeline { stroke: var(--dg-line-strong); stroke-width: 1; stroke-dasharray: 3 4; }
+.dg-badge circle { fill: var(--dg-accent); }
+.dg-badge text { font-size: 11px; font-weight: 800; fill: var(--dg-page); }
+.dg-badge-bad circle { fill: var(--dg-bad); }
+.dg-badge-good circle { fill: var(--dg-good); }
+.dg-badge-cre circle { fill: var(--dg-cre); }
+.dg-term circle { fill: var(--dg-text-2); }
+.dg-term .dg-term-ring { fill: none; stroke: var(--dg-text-2); stroke-width: 1.5; }
+
+.dg-tag rect { fill: var(--dg-accent-bg); stroke: var(--dg-accent); stroke-width: 1; }
+.dg-tag text { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 10px; font-weight: 500; fill: var(--dg-accent); }
+.dg-tag.dg-cre rect { fill: var(--dg-cre-bg); stroke: var(--dg-cre); }
+.dg-tag.dg-cre text { fill: var(--dg-cre); }
+.dg-tag.dg-monad rect { fill: var(--dg-monad-bg); stroke: var(--dg-monad); }
+.dg-tag.dg-monad text { fill: var(--dg-monad); }
+.dg-tag.dg-bad rect { fill: var(--dg-bad-bg); stroke: var(--dg-bad); }
+.dg-tag.dg-bad text { fill: var(--dg-bad); }
+.dg-tag.dg-good rect { fill: var(--dg-good-bg); stroke: var(--dg-good); }
+.dg-tag.dg-good text { fill: var(--dg-good); }
+.dg-tag.dg-muted rect { fill: var(--dg-surface); stroke: var(--dg-line-strong); }
+.dg-tag.dg-muted text { fill: var(--dg-text-2); }
+
+/* charts */
+.dg-chart-title { font-size: 13.5px; font-weight: 650; fill: var(--dg-text); }
+.dg-grid { stroke: var(--dg-line); stroke-width: 1; }
+.dg-axis-line { stroke: var(--dg-line-strong); stroke-width: 1; }
+.dg-axis { font-size: 11px; fill: var(--dg-text-3); font-variant-numeric: tabular-nums; }
+.dg-axis-label { font-size: 12px; fill: var(--dg-text-2); }
+.dg-bar-value { font-size: 12px; font-weight: 650; fill: var(--dg-text); font-variant-numeric: tabular-nums; }
+.dg-bar { fill: var(--dg-accent); }
+.dg-bar-good { fill: var(--dg-good); }
+.dg-bar-bad { fill: var(--dg-bad); }
+.dg-bar-muted { fill: var(--dg-line-strong); }
+.dg-bar-cre { fill: var(--dg-cre); }
+.dg-bar-kuru { fill: var(--dg-kuru); }
+.dg-line { fill: none; stroke: var(--dg-accent); stroke-width: 2.2; stroke-linejoin: round; }
+.dg-area { fill: var(--dg-accent); opacity: 0.1; }
+.dg-point { fill: var(--dg-page); stroke: var(--dg-accent); stroke-width: 2.2; }
+.dg-point-hot { fill: var(--dg-accent); }
+.dg-track { stroke-width: 10; stroke-linecap: round; }
+.dg-track-accent { stroke: var(--dg-accent); }
+.dg-track-good { stroke: var(--dg-good); }
+.dg-track-bad { stroke: var(--dg-bad); }
+.dg-track-cre { stroke: var(--dg-cre); }
+.dg-track-muted { stroke: var(--dg-line-strong); }
+.dg-marker { stroke: var(--dg-text-3); stroke-width: 1.2; stroke-dasharray: 3 4; }
+.dg-dot-good { fill: var(--dg-good); stroke: var(--dg-page); stroke-width: 2; }
+.dg-dot-bad { fill: var(--dg-bad); stroke: var(--dg-page); stroke-width: 2; }
+.dg-dot-accent { fill: var(--dg-accent); stroke: var(--dg-page); stroke-width: 2; }
+.dg-dot-cre { fill: var(--dg-cre); stroke: var(--dg-page); stroke-width: 2; }
+
+/* expand to full screen */
+.dg { position: relative; }
+.dg-zoom {
+  position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 30px; height: 30px;
+  border-radius: 8px; border: 1px solid var(--dg-line-strong); background: var(--dg-box); color: var(--dg-text-2);
+  opacity: 0; transition: opacity 0.15s, color 0.15s; cursor: zoom-in;
+}
+.dg:hover .dg-zoom, .dg-zoom:focus-visible, .dg-open .dg-zoom { opacity: 1; }
+.dg-zoom:hover { color: var(--dg-accent); }
+@media (hover: none) { .dg-zoom { opacity: 0.85; } }
+.dg-backdrop { position: fixed; inset: 0; z-index: 90; background: rgba(4, 3, 2, 0.82); backdrop-filter: blur(4px); }
+.dg-open .dg-frame {
+  position: fixed; inset: 28px; z-index: 91; display: flex; align-items: center; justify-content: center;
+  overflow: auto; padding: 32px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+.dg-open .dg-frame .dg-svg { width: min(100%, 1500px); max-height: 100%; }
+.dg-open .dg-zoom { position: fixed; top: 40px; right: 40px; z-index: 92; cursor: zoom-out; }

@@ -28,17 +28,7 @@ Each series trades on **SilicaBook**, a fully onchain, price-time-priority limit
 
 ## How a market buy fills
 
-```mermaid
-sequenceDiagram
-  actor T as Taker
-  participant B as SilicaBook
-  participant M1 as Maker @ $2.04
-  participant M2 as Maker @ $2.05
-  T->>B: marketBuy(W42, 20 h, maxCost)
-  B->>M1: fill 15 h @ $2.04 (USDC → maker, tokens → taker)
-  B->>M2: fill 5 h @ $2.05
-  B-->>T: Trade events · filled 20 h · cost $40.85
-```
+<Fig name="orderFill" />
 
 ## Events
 

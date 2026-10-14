@@ -17,12 +17,7 @@ Indexed by Envio at the time of writing:
   <div class="stat"><b>24</b><span>oracle reports</span></div>
 </div>
 
-```mermaid
-pie showData
-  title "Delivery outcomes on testnet (hours)"
-  "Confirmed" : 15
-  "Missed (slashed to buyers)" : 9
-```
+<Fig name="proofOutcomes" />
 
 ## Chainlink CRE, through Chainlink's forwarder
 

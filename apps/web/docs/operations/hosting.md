@@ -2,12 +2,7 @@
 
 Silica is hosted in three places, deployed in this order because each needs the previous one's URL.
 
-```mermaid
-flowchart LR
-  E[Envio Cloud<br/>indexer] -->|GraphQL URL| R[Render<br/>2 services]
-  R -->|agent + probe URLs| V[Vercel<br/>web app]
-  E -->|GraphQL URL| V
-```
+<Fig name="hosting" />
 
 | Piece | Host | URL |
 | --- | --- | --- |
